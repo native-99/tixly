@@ -6,7 +6,7 @@ Tixly is a mobile-first event ticketing app. Buyers pick tickets and pay, then g
 
 > **Current stage: frontend with a mock backend.** All data lives in the browser through a mock service layer. The next stage moves the same service interfaces to Supabase (Postgres, Auth, Row Level Security, Storage).
 
-**Live demo:** _coming soon (Cloudflare Pages)_
+**Live demo:** _coming soon (Cloudflare)_
 
 ## Demo accounts
 
@@ -117,17 +117,17 @@ To reset the demo data, clear the site's local storage in your browser.
 
 ## CI/CD
 
-GitHub Actions (`.github/workflows/ci.yml`) runs on every push and pull request: typecheck → lint → unit tests → build.
+**CI:** GitHub Actions (`.github/workflows/ci.yml`) runs on every push and pull request: typecheck → lint → unit tests → build.
 
-Deployment to **Cloudflare Pages** runs only after CI passes on `main`, and only once these are set in the repo settings:
+**CD:** Cloudflare Workers Builds is connected to this repo and deploys every push to `main`.
 
-| Kind | Name |
+- `wrangler.jsonc` serves `dist/` as static assets. `not_found_handling: "single-page-application"` returns `index.html` for unknown paths, so routes like `/my-tickets` still work after a refresh.
+- In Cloudflare, set the build command to `npm run ci`. The same checks as GitHub Actions then run before every deploy, and a failing test stops the deploy.
+
+| Cloudflare build setting | Value |
 | --- | --- |
-| Variable | `CLOUDFLARE_PAGES_PROJECT` (the Pages project name) |
-| Secret | `CLOUDFLARE_API_TOKEN` (permission: Cloudflare Pages: Edit) |
-| Secret | `CLOUDFLARE_ACCOUNT_ID` |
-
-`public/_redirects` sends every path to `index.html`, so routes like `/my-tickets` still work after a page refresh.
+| Build command | `npm run ci` |
+| Deploy command | `npx wrangler deploy` |
 
 ## Roadmap
 

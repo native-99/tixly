@@ -1,18 +1,15 @@
-import { Link } from 'react-router'
-
-interface PagePlaceholderProps {
-  title: string
-}
+import { Construction } from 'lucide-react'
+import { PageHeader } from './PageHeader'
 
 /** Temporary screen used while a page is being built. */
-export function PagePlaceholder({ title }: PagePlaceholderProps) {
+export function PagePlaceholder({ title }: { title: string }) {
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-4 pt-6 pb-10">
-      <Link to="/" className="text-lg font-bold text-brand-600">
-        Tixly
-      </Link>
-      <h1 className="mt-6 text-2xl font-semibold">{title}</h1>
-      <p className="mt-2 text-sm text-slate-500">Coming soon.</p>
-    </main>
+    <>
+      <PageHeader title={title} />
+      <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center">
+        <Construction className="size-8 text-slate-400" aria-hidden />
+        <p className="mt-3 text-sm text-slate-500">This page is under construction.</p>
+      </div>
+    </>
   )
 }

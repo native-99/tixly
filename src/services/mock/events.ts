@@ -1,3 +1,4 @@
+import { resizeImageToDataUrl } from '@/lib/image'
 import { clone, delay, getDb, newId, saveDb } from '@/mocks/db'
 import type { Event, EventSummary, TicketType } from '@/types'
 import { AppError } from '../errors'
@@ -10,6 +11,8 @@ import {
   ticketTypesOf,
   withAvailability,
 } from './shared'
+
+const MAX_POSTER_BYTES = 5 * 1024 * 1024
 
 function toSummary(event: Event): EventSummary {
   const ticketTypes = ticketTypesOf(event.id).map(withAvailability)
@@ -135,5 +138,20 @@ export const mockEventService: EventService = {
     Object.assign(ticketType, input)
     saveDb()
     return clone(ticketType)
+  },
+
+  async uploadPoster(file) {
+    requireUser('organizer')
+    if (!file.type.startsWith('image/')) {
+      throw new AppError('VALIDATION', 'Please choose an image file.')
+    }
+    if (file.size > MAX_POSTER_BYTES) {
+      throw new AppError('VALIDATION', 'Image must be 5 MB or smaller.')
+    }
+    try {
+      return await resizeImageToDataUrl(file)
+    } catch {
+      throw new AppError('VALIDATION', "Couldn't read that image. Try a JPG or PNG.")
+    }
   },
 }

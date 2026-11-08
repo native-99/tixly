@@ -44,6 +44,8 @@ export interface EventService {
   updateEvent(eventId: string, input: EventInput): Promise<Event>
   createTicketType(eventId: string, input: TicketTypeInput): Promise<TicketType>
   updateTicketType(ticketTypeId: string, input: TicketTypeInput): Promise<TicketType>
+  /** Stores a poster image and returns its URL (Supabase Storage later). */
+  uploadPoster(file: File): Promise<string>
 }
 
 export interface CheckoutItemInput {

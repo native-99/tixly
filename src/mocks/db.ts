@@ -67,8 +67,9 @@ export function setSessionUserId(userId: string | null): void {
   writeStorage(SESSION_KEY, userId)
 }
 
-/** Simulates network latency so loading states are visible. */
+/** Simulates network latency so loading states are visible (skipped in tests). */
 export function delay(ms = 350): Promise<void> {
+  if (import.meta.env.MODE === 'test') return Promise.resolve()
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 

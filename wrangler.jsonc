@@ -1,0 +1,10 @@
+// Cloudflare Workers config: serves the built app as static assets.
+{
+  "name": "tixly",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    // Unknown paths (e.g. /my-tickets) serve index.html so React Router can handle them.
+    "not_found_handling": "single-page-application"
+  }
+}

@@ -23,7 +23,8 @@ export const mockAuthService: AuthService = {
     const user = getDb().users.find(
       (candidate) => candidate.email === normalizeEmail(email) && candidate.password === password,
     )
-    if (!user) {
+    // An empty password never matches, even for accounts without one.
+    if (!user || !password) {
       throw new AppError('INVALID_CREDENTIALS', 'Incorrect email or password.')
     }
     setSessionUserId(user.id)

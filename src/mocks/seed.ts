@@ -1,4 +1,4 @@
-import { DEMO_PASSWORD } from '@/config/demo'
+import { DEMO_PASSWORD, DEMO_TICKET_CODES } from '@/config/demo'
 import type { Event, Order, Ticket, TicketType, User } from '@/types'
 
 export interface MockUser extends User {
@@ -17,6 +17,7 @@ export interface MockDb {
 const ORGANIZER_ID = 'usr_organizer'
 const BUYER_ID = 'usr_buyer'
 const OTHER_BUYER_ID = 'usr_buyer_2'
+const BACKGROUND_BUYER_ID = 'usr_crowd'
 
 function daysFromNow(days: number, hour = 19): string {
   const date = new Date()
@@ -44,6 +45,15 @@ export function createSeed(): MockDb {
       role: 'buyer',
       organizerId: null,
       password: DEMO_PASSWORD,
+    },
+    {
+      // Owner of the background sales; cannot sign in (no usable password).
+      id: BACKGROUND_BUYER_ID,
+      email: 'crowd@tixly.invalid',
+      fullName: 'Other buyers',
+      role: 'buyer',
+      organizerId: null,
+      password: '',
     },
     {
       id: ORGANIZER_ID,
@@ -173,12 +183,71 @@ export function createSeed(): MockDb {
     checkedInAt: null,
   })
 
+  const usedTicket = ticket('tkt_seed_4', orders[1], 'tt_comedy_front', DEMO_TICKET_CODES.used)
+  usedTicket.status = 'checked_in'
+  usedTicket.checkedInAt = now
+
   const tickets: Ticket[] = [
-    ticket('tkt_seed_1', orders[0], 'tt_senja_reg', 'TX-7KQ2M9XRPA4D'),
-    ticket('tkt_seed_2', orders[0], 'tt_senja_reg', 'TX-H3VN8WC5TJ6B'),
-    ticket('tkt_seed_3', orders[1], 'tt_comedy_front', 'TX-2PLD4YQ7GM9K'),
-    ticket('tkt_seed_4', orders[1], 'tt_comedy_front', 'TX-R8FS3NB6XW2E'),
+    ticket('tkt_seed_1', orders[0], 'tt_senja_reg', DEMO_TICKET_CODES.ready),
+    ticket('tkt_seed_2', orders[0], 'tt_senja_reg', DEMO_TICKET_CODES.ready2),
+    ticket('tkt_seed_3', orders[1], 'tt_comedy_front', DEMO_TICKET_CODES.ready3),
+    usedTicket,
   ]
 
+  addBackgroundSales(orders, tickets, ticketTypes, now)
+
   return { users, events, ticketTypes, orders, tickets }
+}
+
+/**
+ * Paid orders from other (fictional) buyers, so sales numbers and
+ * "Only N left" badges look realistic in the demo.
+ */
+function addBackgroundSales(orders: Order[], tickets: Ticket[], ticketTypes: TicketType[], now: string) {
+  const sales: Array<[ticketTypeId: string, sold: number]> = [
+    ['tt_senja_early', 50], // sold out
+    ['tt_senja_reg', 128],
+    ['tt_senja_vip', 24], // 6 left
+    ['tt_comedy_reg', 66],
+    ['tt_meetup_reg', 71],
+    ['tt_run_reg', 142],
+  ]
+  const ORDER_SIZE = 4
+  let counter = 0
+
+  for (const [ticketTypeId, sold] of sales) {
+    const ticketType = ticketTypes.find((candidate) => candidate.id === ticketTypeId)
+    if (!ticketType) continue
+
+    for (let start = 0; start < sold; start += ORDER_SIZE) {
+      counter++
+      const quantity = Math.min(ORDER_SIZE, sold - start)
+      const order: Order = {
+        id: `ord_bg_${counter}`,
+        buyerId: BACKGROUND_BUYER_ID,
+        eventId: ticketType.eventId,
+        status: 'paid',
+        items: [{ ticketTypeId, quantity, unitPrice: ticketType.price }],
+        total: quantity * ticketType.price,
+        expiresAt: now,
+        createdAt: now,
+        paidAt: now,
+      }
+      orders.push(order)
+
+      for (let index = 0; index < quantity; index++) {
+        tickets.push({
+          id: `tkt_bg_${counter}_${index}`,
+          orderId: order.id,
+          eventId: order.eventId,
+          ticketTypeId,
+          ownerId: BACKGROUND_BUYER_ID,
+          code: `TX-BG${String(counter).padStart(5, '0')}${index}`,
+          status: 'issued',
+          issuedAt: now,
+          checkedInAt: null,
+        })
+      }
+    }
+  }
 }

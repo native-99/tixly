@@ -3,7 +3,8 @@
 
 import { createSeed, type MockDb } from './seed'
 
-const DB_KEY = 'tixly:db:v1'
+// Bump the version when the seed changes, so browsers drop stale demo data.
+const DB_KEY = 'tixly:db:v3'
 const SESSION_KEY = 'tixly:session:v1'
 
 let cache: MockDb | null = null

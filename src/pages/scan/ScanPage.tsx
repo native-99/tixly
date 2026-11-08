@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query'
-import { ScanLine } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { PageHeader } from '@/components/PageHeader'
 import { ErrorAlert } from '@/components/ui/Alert'
@@ -7,7 +6,15 @@ import { Button } from '@/components/ui/Button'
 import { TextField } from '@/components/ui/TextField'
 import { DEMO_TICKET_CODES } from '@/config/demo'
 import { getErrorMessage, services } from '@/services'
-import { ScanResultCard } from './ScanResultCard'
+import type { CheckInStatus } from '@/types'
+import { CameraScanner } from './CameraScanner'
+import { ScanResultBanner, ScanResultCard } from './ScanResultCard'
+
+/** Short buzz for a valid ticket, longer pattern for a problem (where supported). */
+function vibrateFor(status: CheckInStatus) {
+  if (!('vibrate' in navigator)) return
+  navigator.vibrate(status === 'valid' ? 80 : [200, 100, 200])
+}
 
 const sampleCodes = [
   { label: 'Valid', code: DEMO_TICKET_CODES.ready3 },
@@ -20,6 +27,7 @@ export default function ScanPage() {
 
   const checkInMutation = useMutation({
     mutationFn: (ticketCode: string) => services.tickets.checkIn(ticketCode),
+    onSuccess: (result) => vibrateFor(result.status),
   })
 
   function submit(ticketCode: string) {
@@ -38,13 +46,18 @@ export default function ScanPage() {
     <>
       <PageHeader title="Scan tickets" description="Check in guests at the gate." />
 
-      {/* Camera scanning arrives in a later step; manual entry works today. */}
-      <div className="flex aspect-[4/3] flex-col items-center justify-center rounded-2xl bg-slate-900 text-slate-400">
-        <ScanLine className="size-14" aria-hidden />
-        <p className="mt-2 text-sm">Camera scanner coming soon</p>
+      <CameraScanner
+        onDetected={submit}
+        overlay={checkInMutation.isSuccess && <ScanResultBanner status={checkInMutation.data.status} />}
+      />
+
+      <div className="mt-5 flex items-center gap-3 text-xs font-medium text-slate-400 uppercase">
+        <span className="h-px flex-1 bg-slate-200" />
+        or enter the code
+        <span className="h-px flex-1 bg-slate-200" />
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-4 flex items-end gap-2" noValidate>
+      <form onSubmit={handleSubmit} className="mt-3 flex items-end gap-2" noValidate>
         <TextField
           label="Ticket code"
           className="flex-1"

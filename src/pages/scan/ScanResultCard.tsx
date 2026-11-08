@@ -21,6 +21,17 @@ const config: Record<CheckInStatus, { title: string; icon: LucideIcon; classes: 
   },
 }
 
+/** Compact one-line result shown over the camera view. */
+export function ScanResultBanner({ status }: { status: CheckInStatus }) {
+  const { title, icon: Icon, classes } = config[status]
+  return (
+    <div className={cn('flex items-center gap-2 rounded-xl border-2 px-3 py-2 font-bold shadow-lg', classes)}>
+      <Icon className="size-5 shrink-0" aria-hidden />
+      {title}
+    </div>
+  )
+}
+
 export function ScanResultCard({ result, code }: { result: CheckInResult; code: string }) {
   const { title, icon: Icon, classes } = config[result.status]
   const ticket = result.ticket

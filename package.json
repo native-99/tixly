@@ -3,15 +3,23 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "typecheck": "tsc -b",
+    "lint": "oxlint --deny-warnings",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "ci": "npm run typecheck && npm run lint && npm run test && npm run build"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.107.1",
     "lucide-react": "^1.70.0",
+    "qr-scanner": "^1.4.2",
     "qrcode.react": "^4.2.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
@@ -26,6 +34,7 @@
     "oxlint": "^1.90.0",
     "tailwindcss": "^4.3.5",
     "typescript": "~7.0.2",
-    "vite": "^8.3.6"
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0"
   }
 }

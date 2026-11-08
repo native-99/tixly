@@ -1,3 +1,4 @@
+import { DEMO_PASSWORD } from '@/config/demo'
 import type { Event, Order, Ticket, TicketType, User } from '@/types'
 
 export interface MockUser extends User {
@@ -12,14 +13,6 @@ export interface MockDb {
   orders: Order[]
   tickets: Ticket[]
 }
-
-export const DEMO_PASSWORD = 'demo1234'
-
-export const DEMO_ACCOUNTS = [
-  { role: 'buyer', email: 'buyer@tixly.dev' },
-  { role: 'organizer', email: 'organizer@tixly.dev' },
-  { role: 'staff', email: 'staff@tixly.dev' },
-] as const
 
 const ORGANIZER_ID = 'usr_organizer'
 const BUYER_ID = 'usr_buyer'

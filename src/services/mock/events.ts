@@ -14,12 +14,14 @@ import {
 function toSummary(event: Event): EventSummary {
   const ticketTypes = ticketTypesOf(event.id).map(withAvailability)
   let minPrice: number | null = null
+  let capacity = 0
   let remaining = 0
   for (const ticketType of ticketTypes) {
     if (minPrice === null || ticketType.price < minPrice) minPrice = ticketType.price
+    capacity += ticketType.quota
     remaining += ticketType.remaining
   }
-  return { ...event, minPrice, remaining }
+  return { ...event, minPrice, capacity, remaining }
 }
 
 function bySoonest(a: Event, b: Event): number {

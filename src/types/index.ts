@@ -44,6 +44,8 @@ export interface TicketTypeWithAvailability extends TicketType {
 
 export interface EventSummary extends Event {
   minPrice: number | null
+  /** Sum of all ticket type quotas. */
+  capacity: number
   remaining: number
 }
 

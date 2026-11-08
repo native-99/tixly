@@ -5,6 +5,7 @@ export const paths = {
   eventDetail: (eventId: string) => `/events/${eventId}`,
   login: '/login',
   register: '/register',
+  account: '/account',
   checkout: (orderId: string) => `/checkout/${orderId}`,
   myTickets: '/my-tickets',
   organizerEvents: '/organizer',

@@ -20,7 +20,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     (user: User | null) => {
       queryClient.setQueryData(queryKeys.currentUser, user)
       queryClient.removeQueries({
-        predicate: (query) => query.queryKey !== queryKeys.currentUser,
+        predicate: (query) => query.queryKey[0] !== queryKeys.currentUser[0],
       })
     },
     [queryClient],

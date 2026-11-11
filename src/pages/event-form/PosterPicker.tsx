@@ -5,16 +5,16 @@ import { EventCover } from '@/components/events/EventCover'
 import { ErrorAlert } from '@/components/ui/Alert'
 import { Button } from '@/components/ui/Button'
 import { getErrorMessage, services } from '@/services'
+import type { EventCategory } from '@/types'
 
 interface PosterPickerProps {
-  /** Used for the placeholder cover when there's no poster. */
-  seed: string
   title: string
+  category: EventCategory
   posterUrl: string | null
   onChange(posterUrl: string | null): void
 }
 
-export function PosterPicker({ seed, title, posterUrl, onChange }: PosterPickerProps) {
+export function PosterPicker({ title, category, posterUrl, onChange }: PosterPickerProps) {
   const inputRef = useRef<HTMLInputElement>(null)
 
   const uploadMutation = useMutation({
@@ -31,8 +31,8 @@ export function PosterPicker({ seed, title, posterUrl, onChange }: PosterPickerP
   return (
     <div>
       <EventCover
-        event={{ id: seed, title: title || 'New event', posterUrl }}
-        className="aspect-[16/9] w-full rounded-xl"
+        event={{ title: title || 'New event', posterUrl, category }}
+        className="aspect-[16/9] w-full rounded-2xl shadow-sm"
       />
       <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
       <div className="mt-3 flex gap-2">

@@ -43,7 +43,7 @@ export default function ScanPage() {
   }
 
   return (
-    <>
+    <div className="mx-auto w-full max-w-2xl">
       <PageHeader title="Scan tickets" description="Check in guests at the gate." />
 
       <CameraScanner
@@ -51,10 +51,10 @@ export default function ScanPage() {
         overlay={checkInMutation.isSuccess && <ScanResultBanner status={checkInMutation.data.status} />}
       />
 
-      <div className="mt-5 flex items-center gap-3 text-xs font-medium text-slate-400 uppercase">
-        <span className="h-px flex-1 bg-slate-200" />
+      <div className="mt-5 flex items-center gap-3 text-[11px] font-bold tracking-widest text-ink-400 uppercase">
+        <span className="h-px flex-1 bg-ink-200" />
         or enter the code
-        <span className="h-px flex-1 bg-slate-200" />
+        <span className="h-px flex-1 bg-ink-200" />
       </div>
 
       <form onSubmit={handleSubmit} className="mt-3 flex items-end gap-2" noValidate>
@@ -73,14 +73,14 @@ export default function ScanPage() {
         </Button>
       </form>
 
-      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-ink-500">
         <span>Demo codes:</span>
         {sampleCodes.map((sample) => (
           <button
             key={sample.code}
             type="button"
             onClick={() => submit(sample.code)}
-            className="rounded-full border border-slate-300 bg-white px-3 py-1.5 font-medium text-slate-700 hover:border-brand-500"
+            className="rounded-full border border-ink-200 bg-white/90 px-3.5 py-2 font-semibold text-ink-700 shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-700 hover:shadow-soft"
           >
             {sample.label}
           </button>
@@ -93,6 +93,6 @@ export default function ScanPage() {
           <ScanResultCard result={checkInMutation.data} code={checkInMutation.variables} />
         )}
       </div>
-    </>
+    </div>
   )
 }

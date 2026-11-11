@@ -73,10 +73,12 @@ export function createSeed(): MockDb {
     },
   ]
 
-  const event = (data: Omit<Event, 'organizerId' | 'posterUrl' | 'createdAt'>): Event => ({
+  const event = (
+    data: Omit<Event, 'organizerId' | 'createdAt' | 'posterUrl'> & { posterUrl?: string | null },
+  ): Event => ({
+    posterUrl: null,
     ...data,
     organizerId: ORGANIZER_ID,
-    posterUrl: null,
     createdAt: now,
   })
 
@@ -88,6 +90,8 @@ export function createSeed(): MockDb {
         'An open-air evening of indie and folk music, with local food stalls and art installations.',
       venue: 'Lapangan Banteng',
       city: 'Jakarta',
+      category: 'festival',
+      posterUrl: '/covers/senja-sound.svg',
       startsAt: daysFromNow(21, 16),
       status: 'published',
     }),
@@ -97,6 +101,8 @@ export function createSeed(): MockDb {
       description: 'Five comedians, one night. Seats are limited and very close to the stage.',
       venue: 'Balai Pemuda',
       city: 'Surabaya',
+      category: 'comedy',
+      posterUrl: '/covers/tawa-malam.svg',
       startsAt: daysFromNow(9, 20),
       status: 'published',
     }),
@@ -106,6 +112,8 @@ export function createSeed(): MockDb {
       description: 'Talks on building products in Indonesia, followed by networking and coffee.',
       venue: 'Braga Creative Hub',
       city: 'Bandung',
+      category: 'meetup',
+      posterUrl: '/covers/bandung-tech.svg',
       startsAt: daysFromNow(14, 18),
       status: 'published',
     }),
@@ -115,6 +123,8 @@ export function createSeed(): MockDb {
       description: 'A relaxed 5K beach run at sunset. Finisher medal and drinks included.',
       venue: 'Pantai Kuta',
       city: 'Bali',
+      category: 'sports',
+      posterUrl: '/covers/sunset-run.svg',
       startsAt: daysFromNow(35, 17),
       status: 'published',
     }),
@@ -124,6 +134,8 @@ export function createSeed(): MockDb {
       description: 'An intimate jazz evening. Lineup to be announced.',
       venue: 'Gedung Kesenian',
       city: 'Yogyakarta',
+      category: 'music',
+      posterUrl: '/covers/jazz-kota-lama.svg',
       startsAt: daysFromNow(60, 19),
       status: 'draft',
     }),
@@ -151,6 +163,9 @@ export function createSeed(): MockDb {
       expiresAt: now,
       createdAt: now,
       paidAt: now,
+      paymentProvider: 'simulated',
+      paymentUrl: null,
+      ticketsEmailedAt: now,
     },
     {
       // Buys out the Front Row tier so the "sold out" state is visible in the demo.
@@ -163,6 +178,9 @@ export function createSeed(): MockDb {
       expiresAt: now,
       createdAt: now,
       paidAt: now,
+      paymentProvider: 'simulated',
+      paymentUrl: null,
+      ticketsEmailedAt: now,
     },
   ]
 
@@ -232,6 +250,9 @@ function addBackgroundSales(orders: Order[], tickets: Ticket[], ticketTypes: Tic
         expiresAt: now,
         createdAt: now,
         paidAt: now,
+        paymentProvider: 'simulated',
+        paymentUrl: null,
+        ticketsEmailedAt: now,
       }
       orders.push(order)
 

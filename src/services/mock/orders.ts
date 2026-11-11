@@ -1,5 +1,5 @@
 import { clone, delay, getDb, newId, newTicketCode, saveDb } from '@/mocks/db'
-import type { Order, OrderItem, Ticket } from '@/types'
+import type { Order, OrderItem, OrderSummary, Ticket } from '@/types'
 import { HOLD_MINUTES, MAX_QTY_PER_ITEM } from '../constants'
 import { AppError } from '../errors'
 import type { OrderService } from '../types'
@@ -74,6 +74,9 @@ export const mockOrderService: OrderService = {
       expiresAt: new Date(now.getTime() + HOLD_MINUTES * 60_000).toISOString(),
       createdAt: now.toISOString(),
       paidAt: null,
+      paymentProvider: null,
+      paymentUrl: null,
+      ticketsEmailedAt: null,
     }
     db.orders.push(order)
     saveDb()
@@ -90,6 +93,18 @@ export const mockOrderService: OrderService = {
     }
   },
 
+  async startPayment() {
+    await delay()
+    // The browser-only mock has no gateway; the demo payment runs in-app.
+    return { simulated: true, redirectUrl: null }
+  },
+
+  async sendTickets() {
+    await delay()
+    // No mail server in the browser, but the demo should look finished.
+    return { sent: true, emailedAt: new Date().toISOString() }
+  },
+
   async payOrder(orderId) {
     await delay(800)
     const order = requireOwnOrder(orderId)
@@ -104,6 +119,9 @@ export const mockOrderService: OrderService = {
     const now = new Date().toISOString()
     order.status = 'paid'
     order.paidAt = now
+    order.paymentProvider = 'simulated'
+    order.paymentUrl = null
+    order.ticketsEmailedAt = now
 
     const db = getDb()
     for (const item of order.items) {
@@ -135,5 +153,42 @@ export const mockOrderService: OrderService = {
     order.status = 'cancelled'
     saveDb()
     return clone(order)
+  },
+
+  async listMine() {
+    await delay()
+    const buyer = requireUser('buyer')
+    expireStaleOrders()
+    const db = getDb()
+
+    return db.orders
+      .filter((order) => order.buyerId === buyer.id)
+      .map((order) => {
+        const event = findEvent(order.eventId)
+        if (!event) throw new AppError('NOT_FOUND', 'Order data is incomplete.')
+
+        const summary: OrderSummary = {
+          id: order.id,
+          eventId: order.eventId,
+          status: order.status,
+          total: order.total,
+          expiresAt: order.expiresAt,
+          createdAt: order.createdAt,
+          paidAt: order.paidAt,
+          ticketsEmailedAt: order.ticketsEmailedAt,
+          ticketCount: db.tickets.filter((ticket) => ticket.orderId === order.id).length,
+          event: {
+            id: event.id,
+            title: event.title,
+            posterUrl: event.posterUrl,
+            category: event.category,
+            venue: event.venue,
+            city: event.city,
+            startsAt: event.startsAt,
+          },
+        }
+        return summary
+      })
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
   },
 }

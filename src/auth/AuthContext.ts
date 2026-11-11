@@ -9,6 +9,8 @@ export interface AuthContextValue {
   signIn(email: string, password: string): Promise<User>
   signUp(input: SignUpInput): Promise<User>
   signOut(): Promise<void>
+  /** Emails a one-time login link. `redirectTo` is where the link returns to. */
+  sendMagicLink(email: string, redirectTo?: string): Promise<void>
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null)

@@ -1,8 +1,20 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { DEMO_PASSWORD, DEMO_TICKET_CODES } from '@/config/demo'
 import { getDb, resetDb, saveDb } from '@/mocks/db'
-import { services } from '@/services'
 import type { AppErrorCode } from '@/services'
+import { mockAuthService } from './auth'
+import { mockEventService } from './events'
+import { mockOrderService } from './orders'
+import { mockTicketService } from './tickets'
+
+// These tests cover the mock backend itself, so they use it directly instead
+// of the app's `services`, which points at Supabase by default.
+const services = {
+  auth: mockAuthService,
+  events: mockEventService,
+  orders: mockOrderService,
+  tickets: mockTicketService,
+}
 
 const signInAs = (email: string) => services.auth.signIn(email, DEMO_PASSWORD)
 const asBuyer = () => signInAs('buyer@tixly.dev')
@@ -134,6 +146,26 @@ describe('orders', () => {
     await services.orders.payOrder(order.id)
     await services.orders.payOrder(order.id)
     expect((await services.tickets.listMine()).length).toBe(ticketsBefore + 2)
+  })
+
+  it('lists the buyer’s orders with event and ticket details', async () => {
+    await asBuyer()
+    const order = await services.orders.createOrder('evt_senja', [
+      { ticketTypeId: 'tt_senja_reg', quantity: 1 },
+    ])
+    await services.orders.payOrder(order.id)
+
+    const mine = await services.orders.listMine()
+    const row = mine.find((candidate) => candidate.id === order.id)
+    expect(row).toMatchObject({
+      status: 'paid',
+      ticketCount: 1,
+      eventId: 'evt_senja',
+      total: 250_000,
+    })
+    expect(row?.event.title).toBe('Senja Sound Festival')
+    expect(row?.event.category).toBe('festival')
+    expect(row?.ticketsEmailedAt).not.toBeNull()
   })
 
   it("hides other buyers' orders", async () => {

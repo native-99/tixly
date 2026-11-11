@@ -9,10 +9,14 @@ interface QuantityStepperProps {
 
 export function QuantityStepper({ value, max, label, onChange }: QuantityStepperProps) {
   const buttonClass =
-    'grid size-11 place-items-center rounded-xl border border-slate-300 bg-white text-slate-700 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40'
+    'grid size-10 place-items-center rounded-xl border border-ink-200/80 bg-white/90 text-ink-600 shadow-sm transition-all hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-ink-200/80 disabled:hover:bg-white/90 disabled:hover:text-ink-600'
 
   return (
-    <div className="flex items-center gap-2" role="group" aria-label={label}>
+    <div
+      className="flex items-center gap-1.5 rounded-2xl border border-ink-200/80 bg-ink-50/70 p-1"
+      role="group"
+      aria-label={label}
+    >
       <button
         type="button"
         className={buttonClass}
@@ -22,7 +26,7 @@ export function QuantityStepper({ value, max, label, onChange }: QuantityStepper
       >
         <Minus className="size-4" aria-hidden />
       </button>
-      <span className="w-6 text-center font-semibold tabular-nums" aria-live="polite">
+      <span className="w-6 text-center text-sm font-bold tabular-nums text-ink-900" aria-live="polite">
         {value}
       </span>
       <button

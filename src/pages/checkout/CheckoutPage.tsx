@@ -13,6 +13,8 @@ export default function CheckoutPage() {
   const orderQuery = useQuery({
     queryKey: queryKeys.order(orderId),
     queryFn: () => services.orders.getById(orderId),
+    // A gateway payment is confirmed by a webhook, so poll while it's pending.
+    refetchInterval: (query) => (query.state.data?.status === 'pending' ? 4000 : false),
   })
   const eventId = orderQuery.data?.eventId
   const eventQuery = useQuery({

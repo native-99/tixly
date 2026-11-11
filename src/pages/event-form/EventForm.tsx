@@ -1,10 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useId, useState, type FormEvent, type ReactNode } from 'react'
+import { useState, type FormEvent, type ReactNode } from 'react'
 import { useNavigate } from 'react-router'
 import { ErrorAlert } from '@/components/ui/Alert'
 import { Button } from '@/components/ui/Button'
+import { SelectField } from '@/components/ui/SelectField'
 import { TextAreaField } from '@/components/ui/TextAreaField'
 import { TextField } from '@/components/ui/TextField'
+import { categoryMeta, eventCategories } from '@/config/categories'
 import { queryKeys } from '@/lib/queryKeys'
 import { getErrorMessage, services } from '@/services'
 import { paths } from '@/routes/paths'
@@ -29,12 +31,12 @@ interface EventFormProps {
 export function EventForm({ eventId, initialValues }: EventFormProps) {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const coverSeed = useId()
   const [values, setValues] = useState(initialValues)
   const [errors, setErrors] = useState<FormErrors>({ rows: {} })
 
-  // NOTE: these are several calls in the mock. In the Supabase stage this
-  // becomes one database function, so the event and its tickets save atomically.
+  // The event and its ticket types are saved one call at a time. On Supabase
+  // every write goes through Row Level Security, so only the organizer of the
+  // event can change it.
   const saveMutation = useMutation({
     mutationFn: async (formValues: EventFormValues) => {
       const eventInput = toEventInput(formValues)
@@ -77,11 +79,11 @@ export function EventForm({ eventId, initialValues }: EventFormProps) {
   const showFixMessage = hasErrors(errors)
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-4 pb-24">
+    <form onSubmit={handleSubmit} noValidate className="mx-auto max-w-2xl space-y-4 pb-32 md:pb-6">
       <Section title="Poster">
         <PosterPicker
-          seed={eventId ?? coverSeed}
           title={values.title}
+          category={values.category}
           posterUrl={values.posterUrl}
           onChange={(posterUrl) => update('posterUrl', posterUrl)}
         />
@@ -95,6 +97,15 @@ export function EventForm({ eventId, initialValues }: EventFormProps) {
             onChange={(event) => update('title', event.target.value)}
             error={errors.title}
             maxLength={120}
+          />
+          <SelectField
+            label="Category"
+            value={values.category}
+            onChange={(event) => update('category', event.target.value as EventFormValues['category'])}
+            options={eventCategories.map((category) => ({
+              value: category,
+              label: categoryMeta[category].label,
+            }))}
           />
           <TextAreaField
             label="Description"
@@ -141,8 +152,9 @@ export function EventForm({ eventId, initialValues }: EventFormProps) {
       {showFixMessage && <ErrorAlert>Please fix the highlighted fields.</ErrorAlert>}
       {saveMutation.isError && <ErrorAlert>{getErrorMessage(saveMutation.error)}</ErrorAlert>}
 
-      <div className="fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-10 border-t border-slate-200 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-md gap-3 px-4 py-3">
+      {/* Mobile: a floating bar keeps the action within reach. */}
+      <div className="fixed inset-x-0 bottom-0 z-10 px-4 pb-4 md:hidden">
+        <div className="mx-auto flex max-w-2xl gap-3 rounded-3xl border border-white/60 bg-white/85 p-2 shadow-pill backdrop-blur-xl">
           <Button variant="secondary" className="flex-1" onClick={() => navigate(paths.organizerEvents)}>
             Cancel
           </Button>
@@ -151,14 +163,24 @@ export function EventForm({ eventId, initialValues }: EventFormProps) {
           </Button>
         </div>
       </div>
+
+      {/* Desktop: inline, so the bar never covers a field. */}
+      <div className="hidden gap-3 pt-2 md:flex">
+        <Button variant="secondary" className="flex-1" onClick={() => navigate(paths.organizerEvents)}>
+          Cancel
+        </Button>
+        <Button type="submit" className="flex-1" isLoading={saveMutation.isPending}>
+          {eventId ? 'Save changes' : 'Create event'}
+        </Button>
+      </div>
     </form>
   )
 }
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-4">
-      <h2 className="mb-3 font-semibold text-slate-900">{title}</h2>
+    <section className="rounded-3xl border border-white/70 bg-white/85 p-5 shadow-soft backdrop-blur-sm">
+      <h2 className="mb-4 text-sm font-extrabold tracking-widest text-ink-400 uppercase">{title}</h2>
       {children}
     </section>
   )

@@ -25,7 +25,7 @@ const config: Record<CheckInStatus, { title: string; icon: LucideIcon; classes: 
 export function ScanResultBanner({ status }: { status: CheckInStatus }) {
   const { title, icon: Icon, classes } = config[status]
   return (
-    <div className={cn('flex items-center gap-2 rounded-xl border-2 px-3 py-2 font-bold shadow-lg', classes)}>
+    <div className={cn('flex items-center gap-2 rounded-2xl border-2 px-4 py-2.5 font-bold shadow-lift', classes)}>
       <Icon className="size-5 shrink-0" aria-hidden />
       {title}
     </div>
@@ -37,11 +37,11 @@ export function ScanResultCard({ result, code }: { result: CheckInResult; code: 
   const ticket = result.ticket
 
   return (
-    <div role="status" aria-live="assertive" className={cn('rounded-2xl border-2 p-4', classes)}>
-      <div className="flex items-center gap-3">
+    <div role="status" aria-live="assertive" className={cn('rounded-3xl border-2 p-5 shadow-soft', classes)}>
+      <div className="flex items-center gap-3.5">
         <Icon className="size-9 shrink-0" aria-hidden />
         <div className="min-w-0">
-          <p className="text-lg font-bold">{title}</p>
+          <p className="text-lg font-extrabold tracking-tight">{title}</p>
           <p className="font-mono text-xs opacity-80">{code}</p>
         </div>
       </div>

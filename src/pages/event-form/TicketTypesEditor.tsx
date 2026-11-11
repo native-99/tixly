@@ -28,9 +28,9 @@ export function TicketTypesEditor({ rows, rowErrors, listError, onChange }: Tick
       {rows.map((row, index) => {
         const errors = rowErrors[row.key] ?? {}
         return (
-          <div key={row.key} className="rounded-xl border border-slate-200 p-3">
+          <div key={row.key} className="rounded-2xl border border-ink-100 bg-ink-50/60 p-3.5">
             <div className="flex items-center justify-between">
-              <p className="text-xs font-semibold tracking-wide text-slate-500 uppercase">
+              <p className="text-xs font-extrabold tracking-widest text-ink-400 uppercase">
                 Ticket {index + 1}
               </p>
               {/* Saved ticket types may already have buyers, so only unsaved rows can be removed. */}
@@ -38,7 +38,7 @@ export function TicketTypesEditor({ rows, rowErrors, listError, onChange }: Tick
                 <button
                   type="button"
                   onClick={() => removeRow(row.key)}
-                  className="grid size-9 place-items-center rounded-lg text-slate-500 hover:bg-slate-100"
+                  className="grid size-9 place-items-center rounded-lg text-ink-400 hover:bg-ink-900/5 hover:text-ink-700"
                   aria-label={`Remove ticket ${index + 1}`}
                 >
                   <X className="size-4" aria-hidden />

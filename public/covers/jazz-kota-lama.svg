@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Jazz evening illustration">
+  <defs>
+    <linearGradient id="jazz-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0c0a1f"/>
+      <stop offset="0.55" stop-color="#1e1b4b"/>
+      <stop offset="1" stop-color="#3f2d12"/>
+    </linearGradient>
+    <linearGradient id="jazz-gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fef3c7"/>
+      <stop offset="0.5" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#b45309"/>
+    </linearGradient>
+    <radialGradient id="jazz-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fbbf24" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#jazz-bg)"/>
+  <circle cx="400" cy="220" r="240" fill="url(#jazz-glow)"/>
+
+  <g fill="#05040f" opacity="0.85">
+    <rect x="0" y="300" width="90" height="150"/>
+    <rect x="90" y="260" width="70" height="190"/>
+    <rect x="160" y="315" width="80" height="135"/>
+    <rect x="240" y="280" width="60" height="170"/>
+    <rect x="500" y="290" width="75" height="160"/>
+    <rect x="575" y="250" width="65" height="200"/>
+    <rect x="640" y="305" width="80" height="145"/>
+    <rect x="720" y="270" width="80" height="180"/>
+  </g>
+  <g fill="#fbbf24" opacity="0.5">
+    <rect x="104" y="278" width="10" height="12"/>
+    <rect x="130" y="296" width="10" height="12"/>
+    <rect x="590" y="268" width="10" height="12"/>
+    <rect x="614" y="290" width="10" height="12"/>
+    <rect x="736" y="288" width="10" height="12"/>
+  </g>
+
+  <g transform="translate(330 95)">
+    <path d="M80 10 C120 10 140 40 140 78 C140 130 108 170 76 190 L76 240 C76 260 92 270 112 272 L112 286 C70 286 48 266 48 238 L48 190 C16 170 -12 130 -12 78 C-12 40 40 10 80 10 Z" fill="url(#jazz-gold)"/>
+    <circle cx="64" cy="96" r="10" fill="#1c1917"/>
+    <circle cx="48" cy="128" r="9" fill="#1c1917"/>
+    <circle cx="44" cy="162" r="8" fill="#1c1917"/>
+    <path d="M80 10 C100 10 116 18 126 32 L96 46 C90 30 84 22 80 10 Z" fill="#fef3c7" opacity="0.8"/>
+  </g>
+
+  <g fill="#fbbf24" opacity="0.85">
+    <path d="M200 120 V70 L240 60 V110 Z"/>
+    <circle cx="193" cy="120" r="12"/>
+    <circle cx="233" cy="110" r="12"/>
+    <path d="M570 190 V140 L610 130 V180 Z"/>
+    <circle cx="563" cy="190" r="12"/>
+    <circle cx="603" cy="180" r="12"/>
+  </g>
+
+  <g fill="#fef3c7" opacity="0.65">
+    <circle cx="160" cy="190" r="3"/>
+    <circle cx="210" cy="235" r="2"/>
+    <circle cx="650" cy="120" r="2.5"/>
+    <circle cx="690" cy="210" r="3"/>
+    <circle cx="120" cy="90" r="2"/>
+  </g>
+</svg>

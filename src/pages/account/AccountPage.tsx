@@ -26,23 +26,25 @@ export default function AccountPage() {
   if (!user) return null
 
   return (
-    <>
+    <div className="mx-auto w-full max-w-xl">
       <PageHeader title="Account" />
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-4">
-        <div className="flex items-center gap-3">
-          <span className="grid size-12 shrink-0 place-items-center rounded-full bg-brand-100 text-lg font-semibold text-brand-700">
-            {user.fullName.charAt(0).toUpperCase()}
-          </span>
-          <div className="min-w-0">
-            <p className="truncate font-semibold text-slate-900">{user.fullName}</p>
-            <p className="truncate text-sm text-slate-500">{user.email}</p>
+      <section className="overflow-hidden rounded-3xl border border-white/70 bg-white/90 shadow-soft backdrop-blur-sm">
+        <div className="bg-linear-to-br from-brand-600 via-brand-700 to-violet-600 px-5 py-7 text-white">
+          <div className="flex items-center gap-4">
+            <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-white/20 text-xl font-extrabold backdrop-blur">
+              {user.fullName.charAt(0).toUpperCase()}
+            </span>
+            <div className="min-w-0">
+              <p className="truncate text-lg font-extrabold tracking-tight">{user.fullName}</p>
+              <p className="truncate text-sm text-white/75">{user.email}</p>
+            </div>
           </div>
         </div>
-        <dl className="mt-4 border-t border-slate-100 pt-4 text-sm">
-          <div className="flex justify-between">
-            <dt className="text-slate-500">Role</dt>
-            <dd className="rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-semibold text-brand-700">
+        <dl className="px-5 py-4 text-sm">
+          <div className="flex items-center justify-between">
+            <dt className="text-ink-500">Role</dt>
+            <dd className="rounded-full bg-brand-50 px-3 py-1 text-xs font-bold text-brand-700 ring-1 ring-brand-500/15 ring-inset">
               {roleLabel[user.role]}
             </dd>
           </div>
@@ -61,6 +63,6 @@ export default function AccountPage() {
           Log out
         </Button>
       </div>
-    </>
+    </div>
   )
 }

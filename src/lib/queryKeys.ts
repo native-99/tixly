@@ -8,4 +8,5 @@ export const queryKeys = {
   event: (eventId: string) => ['events', 'detail', eventId] as const,
   order: (orderId: string) => ['orders', orderId] as const,
   myTickets: ['tickets', 'mine'] as const,
+  myOrders: ['orders', 'mine'] as const,
 }

@@ -10,4 +10,15 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        // The Supabase client is a big dependency and changes rarely, so it
+        // gets its own chunk instead of being re-downloaded on every deploy.
+        codeSplitting: {
+          groups: [{ name: 'supabase', test: /node_modules[\\/]@supabase/ }],
+        },
+      },
+    },
+  },
 })

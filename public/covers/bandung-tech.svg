@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Tech meetup illustration">
+  <defs>
+    <linearGradient id="meetup-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#134e4a"/>
+      <stop offset="0.55" stop-color="#0f766e"/>
+      <stop offset="1" stop-color="#0c4a6e"/>
+    </linearGradient>
+    <linearGradient id="meetup-screen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a7f3d0"/>
+      <stop offset="1" stop-color="#67e8f9"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#meetup-bg)"/>
+
+  <g stroke="#ffffff" stroke-opacity="0.08">
+    <path d="M0 90 H800 M0 180 H800 M0 270 H800 M0 360 H800"/>
+    <path d="M100 0 V450 M200 0 V450 M300 0 V450 M400 0 V450 M500 0 V450 M600 0 V450 M700 0 V450"/>
+  </g>
+
+  <circle cx="650" cy="90" r="160" fill="#22d3ee" opacity="0.12"/>
+  <circle cx="120" cy="380" r="130" fill="#34d399" opacity="0.12"/>
+
+  <g>
+    <rect x="280" y="150" width="260" height="160" rx="16" fill="#0f172a" stroke="#5eead4" stroke-width="3"/>
+    <rect x="300" y="170" width="220" height="120" rx="8" fill="url(#meetup-screen)" opacity="0.9"/>
+    <g fill="#0f766e" opacity="0.55">
+      <rect x="318" y="188" width="90" height="10" rx="5"/>
+      <rect x="318" y="208" width="150" height="8" rx="4"/>
+      <rect x="318" y="226" width="120" height="8" rx="4"/>
+      <rect x="318" y="244" width="170" height="8" rx="4"/>
+      <rect x="318" y="264" width="70" height="12" rx="6"/>
+    </g>
+    <path d="M540 250 L590 310 H250 L300 250 Z" fill="#134e4a" opacity="0.9"/>
+    <rect x="240" y="306" width="360" height="14" rx="7" fill="#0f172a"/>
+  </g>
+
+  <g>
+    <path d="M120 120 H230 A24 24 0 0 1 254 144 V188 A24 24 0 0 1 230 212 H176 L148 236 L152 212 H120 A24 24 0 0 1 96 188 V144 A24 24 0 0 1 120 120 Z" fill="#f0fdfa" opacity="0.92"/>
+    <g fill="#0f766e">
+      <circle cx="140" cy="164" r="5"/>
+      <circle cx="166" cy="164" r="5"/>
+      <circle cx="192" cy="164" r="5"/>
+    </g>
+  </g>
+
+  <g>
+    <rect x="620" y="130" width="96" height="72" rx="18" fill="#f0fdfa" opacity="0.9"/>
+    <path d="M716 160 L748 144 V204 L716 188 Z" fill="#f0fdfa" opacity="0.75"/>
+    <circle cx="668" cy="166" r="18" fill="#0d9488"/>
+    <rect x="650" y="184" width="36" height="8" rx="4" fill="#0d9488" opacity="0.6"/>
+  </g>
+
+  <g fill="#ccfbf1" opacity="0.7">
+    <circle cx="90" cy="300" r="4"/>
+    <circle cx="740" cy="260" r="3"/>
+    <circle cx="690" cy="330" r="5"/>
+    <circle cx="170" cy="70" r="3"/>
+  </g>
+</svg>

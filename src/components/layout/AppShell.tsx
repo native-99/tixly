@@ -1,17 +1,27 @@
-import { Outlet } from 'react-router'
+import { Outlet, useLocation } from 'react-router'
+import { cn } from '@/lib/cn'
 import { AppHeader } from './AppHeader'
 import { BottomNav } from './BottomNav'
 
-/** Main mobile layout: sticky header, scrolling content, fixed bottom nav. */
+/** Main layout: sticky header, scrolling content, floating bottom nav on mobile. */
 export function AppShell() {
+  const { pathname } = useLocation()
+  // The event detail page has its own checkout bar, so the bottom nav would
+  // eat too much of a small screen.
+  const isEventDetail = /^\/events\/[^/]+$/.test(pathname)
+
   return (
     <div className="min-h-dvh">
       <AppHeader />
-      {/* Bottom padding keeps content clear of the fixed bottom nav. */}
-      <main className="mx-auto w-full max-w-md px-4 pt-5 pb-[calc(5rem+env(safe-area-inset-bottom))]">
+      <main
+        className={cn(
+          'mx-auto w-full max-w-6xl px-4 pt-6 md:px-6 md:pt-10 md:pb-14',
+          isEventDetail ? 'pb-8' : 'pb-28',
+        )}
+      >
         <Outlet />
       </main>
-      <BottomNav />
+      {!isEventDetail && <BottomNav />}
     </div>
   )
 }

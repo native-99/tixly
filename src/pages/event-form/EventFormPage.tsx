@@ -14,16 +14,16 @@ export default function EventFormPage() {
   const { eventId } = useParams()
 
   return (
-    <>
+    <div className="mx-auto w-full max-w-2xl">
       <Link
         to={paths.organizerEvents}
-        className="mb-1 inline-flex min-h-11 items-center gap-1 text-sm font-medium text-slate-600"
+        className="mb-1 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-ink-500"
       >
         <ArrowLeft className="size-4" aria-hidden />
         My events
       </Link>
       {eventId ? <EditEvent eventId={eventId} /> : <CreateEvent />}
-    </>
+    </div>
   )
 }
 

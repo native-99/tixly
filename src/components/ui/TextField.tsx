@@ -14,7 +14,7 @@ export function TextField({ label, error, hint, className, id, ...rest }: TextFi
 
   return (
     <div className={className}>
-      <label htmlFor={inputId} className="mb-1.5 block text-sm font-medium text-slate-700">
+      <label htmlFor={inputId} className="mb-1.5 block text-sm font-semibold text-ink-700">
         {label}
       </label>
       <input
@@ -23,18 +23,19 @@ export function TextField({ label, error, hint, className, id, ...rest }: TextFi
         aria-describedby={describedBy}
         className={cn(
           // text-base (16px) stops iOS Safari from zooming in on focus
-          'block min-h-11 w-full rounded-xl border bg-white px-3.5 text-base text-slate-900 placeholder:text-slate-400',
-          'focus:border-brand-500 focus:ring-2 focus:ring-brand-100 focus:outline-none',
-          error ? 'border-red-400' : 'border-slate-300',
+          'block min-h-12 w-full rounded-2xl border bg-white/90 px-4 text-base text-ink-900 shadow-sm transition-all',
+          'placeholder:text-ink-400',
+          'focus:border-brand-400 focus:bg-white focus:ring-4 focus:ring-brand-500/12 focus:outline-none',
+          error ? 'border-red-300 focus:border-red-400 focus:ring-red-500/12' : 'border-ink-200',
         )}
         {...rest}
       />
       {error ? (
-        <p id={`${inputId}-error`} className="mt-1.5 text-sm text-red-600">
+        <p id={`${inputId}-error`} className="mt-1.5 text-sm font-medium text-red-600">
           {error}
         </p>
       ) : hint ? (
-        <p id={`${inputId}-hint`} className="mt-1.5 text-sm text-slate-500">
+        <p id={`${inputId}-hint`} className="mt-1.5 text-sm text-ink-500">
           {hint}
         </p>
       ) : null}

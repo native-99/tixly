@@ -58,4 +58,8 @@ export const mockAuthService: AuthService = {
     await delay(150)
     setSessionUserId(null)
   },
+
+  async sendMagicLink() {
+    throw new AppError('VALIDATION', 'Magic links need the Supabase backend.')
+  },
 }

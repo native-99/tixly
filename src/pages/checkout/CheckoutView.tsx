@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { CircleCheck, Clock, CreditCard } from 'lucide-react'
-import type { ReactNode } from 'react'
+import { CircleCheck, Clock, CreditCard, Mail } from 'lucide-react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { EventCover } from '@/components/events/EventCover'
 import { PageHeader } from '@/components/PageHeader'
@@ -18,10 +18,17 @@ interface CheckoutViewProps {
   event: EventDetail
 }
 
+/** Copy only; the server still decides whether a gateway is available. */
+const paymentMode = import.meta.env.VITE_PAYMENT_MODE === 'midtrans' ? 'midtrans' : 'simulated'
+
+type EmailState = 'idle' | 'sending' | 'sent' | 'failed'
+
 export function CheckoutView({ order, event }: CheckoutViewProps) {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const msLeft = useCountdown(order.expiresAt)
+  const [emailState, setEmailState] = useState<EmailState>(order.ticketsEmailedAt ? 'sent' : 'idle')
+  const emailRequested = useRef(false)
 
   // The server decides the final status; the countdown hitting 0 is enough to
   // stop the buyer from paying in the UI.
@@ -34,13 +41,32 @@ export function CheckoutView({ order, event }: CheckoutViewProps) {
     queryClient.invalidateQueries({ queryKey: queryKeys.order(order.id) })
     queryClient.invalidateQueries({ queryKey: queryKeys.events })
     queryClient.invalidateQueries({ queryKey: queryKeys.myTickets })
+    queryClient.invalidateQueries({ queryKey: queryKeys.myOrders })
   }
 
   const payMutation = useMutation({
     mutationFn: () => services.orders.payOrder(order.id),
     onSuccess: () => {
       refreshAfterChange()
-      navigate(paths.myTickets, { replace: true })
+      // The simulated payment has no webhook, so deliver the email from here.
+      services.orders.sendTickets(order.id).catch(() => undefined)
+    },
+    onError: refreshAfterChange,
+  })
+
+  const paymentMutation = useMutation({
+    mutationFn: () => services.orders.startPayment(order.id),
+    onSuccess: (session) => {
+      if (session.simulated) {
+        payMutation.mutate()
+        return
+      }
+      if (session.redirectUrl) {
+        // Leave the app for the gateway's hosted page.
+        window.location.assign(session.redirectUrl)
+        return
+      }
+      refreshAfterChange()
     },
     onError: refreshAfterChange,
   })
@@ -53,15 +79,44 @@ export function CheckoutView({ order, event }: CheckoutViewProps) {
     },
   })
 
-  const actionError = payMutation.error ?? cancelMutation.error
-  const isBusy = payMutation.isPending || cancelMutation.isPending
+  // Returning from the gateway: the webhook already sent the email, but if it
+  // failed (or hasn't run yet) this makes sure the buyer still gets it.
+  useEffect(() => {
+    if (order.status !== 'paid' || order.ticketsEmailedAt || emailRequested.current) return
+
+    emailRequested.current = true
+    setEmailState('sending')
+    services.orders
+      .sendTickets(order.id)
+      .then((result) => {
+        setEmailState(result.sent || result.alreadySent ? 'sent' : 'failed')
+        if (result.emailedAt) {
+          queryClient.setQueryData<Order | null>(queryKeys.order(order.id), (current) =>
+            current ? { ...current, ticketsEmailedAt: result.emailedAt } : current,
+          )
+        }
+      })
+      .catch(() => setEmailState('failed'))
+  }, [order.id, order.status, order.ticketsEmailedAt, queryClient])
+
+  const resendMutation = useMutation({
+    mutationFn: () => services.orders.sendTickets(order.id, { resend: true }),
+    onSuccess: () => setEmailState('sent'),
+    onError: () => setEmailState('failed'),
+  })
+
+  const actionError = paymentMutation.error ?? payMutation.error ?? cancelMutation.error
+  const isBusy = paymentMutation.isPending || payMutation.isPending || cancelMutation.isPending
+  // The order may already carry the sent timestamp (revisit, or the mock backend).
+  const shownEmailState: EmailState =
+    emailState === 'idle' && order.ticketsEmailedAt ? 'sent' : emailState
 
   return (
-    <>
-      <PageHeader title="Checkout" />
+    <div className="mx-auto w-full max-w-2xl">
+      <PageHeader title="Checkout" description="Your tickets are held while you pay." />
 
       {order.status === 'pending' && !isExpired && (
-        <div className="mb-4 flex items-center gap-2 rounded-xl bg-amber-50 px-3 py-2.5 text-sm text-amber-900">
+        <div className="mb-5 flex items-center gap-2.5 rounded-2xl border border-amber-200/70 bg-amber-50/80 px-4 py-3 text-sm font-medium text-amber-900 backdrop-blur-sm">
           <Clock className="size-4 shrink-0" aria-hidden />
           <span>
             Tickets held for you for{' '}
@@ -72,31 +127,35 @@ export function CheckoutView({ order, event }: CheckoutViewProps) {
         </div>
       )}
 
-      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
-        <div className="flex gap-3 p-4">
-          <EventCover event={event} className="size-16 shrink-0 rounded-xl" />
+      <section className="overflow-hidden rounded-3xl border border-white/70 bg-white/90 shadow-soft backdrop-blur-sm">
+        <div className="flex gap-4 p-5">
+          <EventCover event={event} className="size-20 shrink-0 rounded-2xl shadow-sm" />
           <div className="min-w-0">
-            <p className="line-clamp-2 font-semibold">{event.title}</p>
-            <p className="mt-0.5 text-sm text-slate-500">{formatDateTime(event.startsAt)}</p>
-            <p className="text-sm text-slate-500">
+            <p className="line-clamp-2 font-extrabold tracking-tight text-ink-900">{event.title}</p>
+            <p className="mt-1 text-sm font-medium text-ink-500">{formatDateTime(event.startsAt)}</p>
+            <p className="text-sm text-ink-500">
               {event.venue}, {event.city}
             </p>
           </div>
         </div>
 
-        <ul className="divide-y divide-slate-100 border-t border-slate-100 px-4 text-sm">
+        <ul className="divide-y divide-ink-100 border-t border-ink-100 px-5 text-sm">
           {order.items.map((item) => (
-            <li key={item.ticketTypeId} className="flex justify-between gap-3 py-3">
-              <span className="text-slate-700">
+            <li key={item.ticketTypeId} className="flex justify-between gap-3 py-3.5">
+              <span className="font-medium text-ink-700">
                 {item.quantity} × {ticketTypeName(item.ticketTypeId)}
               </span>
-              <span className="font-medium tabular-nums">{formatRupiah(item.unitPrice * item.quantity)}</span>
+              <span className="font-semibold tabular-nums text-ink-900">
+                {formatRupiah(item.unitPrice * item.quantity)}
+              </span>
             </li>
           ))}
         </ul>
-        <div className="flex justify-between border-t border-slate-200 bg-slate-50 px-4 py-3">
-          <span className="font-semibold">Total</span>
-          <span className="font-bold tabular-nums">{formatRupiah(order.total)}</span>
+        <div className="flex items-baseline justify-between border-t border-ink-100 bg-ink-50/70 px-5 py-4">
+          <span className="font-bold text-ink-900">Total</span>
+          <span className="bg-linear-to-r from-brand-600 to-violet-600 bg-clip-text text-xl font-extrabold tracking-tight text-transparent tabular-nums">
+            {formatRupiah(order.total)}
+          </span>
         </div>
       </section>
 
@@ -108,36 +167,52 @@ export function CheckoutView({ order, event }: CheckoutViewProps) {
 
       {order.status === 'paid' ? (
         <StatusBox tone="success" title="Payment complete" text="Your tickets are ready.">
-          <Link to={paths.myTickets} className="font-semibold text-brand-600">
+          <EmailStatus
+            state={shownEmailState}
+            isResending={resendMutation.isPending}
+            onResend={() => resendMutation.mutate()}
+          />
+          <Link to={paths.myTickets} className="mt-3 inline-block font-semibold text-brand-700">
             View my tickets
           </Link>
         </StatusBox>
       ) : order.status === 'cancelled' ? (
         <StatusBox tone="neutral" title="Order cancelled" text="The held tickets were released.">
-          <Link to={paths.eventDetail(event.id)} className="font-semibold text-brand-600">
+          <Link to={paths.eventDetail(event.id)} className="font-semibold text-brand-700">
             Back to event
           </Link>
         </StatusBox>
       ) : isExpired ? (
         <StatusBox tone="neutral" title="Hold expired" text="Your tickets were released. Please try again.">
-          <Link to={paths.eventDetail(event.id)} className="font-semibold text-brand-600">
+          <Link to={paths.eventDetail(event.id)} className="font-semibold text-brand-700">
             Back to event
           </Link>
         </StatusBox>
       ) : (
         <>
-          <section className="mt-4 flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4">
-            <span className="grid size-10 place-items-center rounded-xl bg-brand-50 text-brand-600">
+          <section className="mt-5 flex items-center gap-3.5 rounded-3xl border border-white/70 bg-white/90 p-4 shadow-soft backdrop-blur-sm">
+            <span className="grid size-11 place-items-center rounded-2xl bg-linear-to-br from-brand-100 to-brand-50 text-brand-600">
               <CreditCard className="size-5" aria-hidden />
             </span>
             <div>
-              <p className="text-sm font-semibold">Test payment</p>
-              <p className="text-xs text-slate-500">Simulated — no money is charged.</p>
+              <p className="text-sm font-bold text-ink-900">
+                {paymentMode === 'midtrans' ? 'Secure payment' : 'Test payment'}
+              </p>
+              <p className="text-xs text-ink-500">
+                {paymentMode === 'midtrans'
+                  ? 'You will be redirected to Midtrans to pay.'
+                  : 'Simulated — no money is charged.'}
+              </p>
             </div>
           </section>
 
           <div className="mt-6 space-y-3">
-            <Button fullWidth onClick={() => payMutation.mutate()} isLoading={payMutation.isPending} disabled={isBusy}>
+            <Button
+              fullWidth
+              onClick={() => paymentMutation.mutate()}
+              isLoading={paymentMutation.isPending || payMutation.isPending}
+              disabled={isBusy}
+            >
               Pay {formatRupiah(order.total)}
             </Button>
             <Button
@@ -152,7 +227,41 @@ export function CheckoutView({ order, event }: CheckoutViewProps) {
           </div>
         </>
       )}
-    </>
+    </div>
+  )
+}
+
+interface EmailStatusProps {
+  state: EmailState
+  isResending: boolean
+  onResend(): void
+}
+
+function EmailStatus({ state, isResending, onResend }: EmailStatusProps) {
+  if (state === 'idle') return null
+
+  if (state === 'failed') {
+    return (
+      <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm text-ink-500">
+        <Mail className="size-4" aria-hidden />
+        We couldn't email your tickets.
+        <button
+          type="button"
+          onClick={onResend}
+          disabled={isResending}
+          className="font-semibold text-brand-700 underline-offset-2 hover:underline disabled:opacity-60"
+        >
+          {isResending ? 'Sending…' : 'Try again'}
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <p className="flex items-center justify-center gap-1.5 text-sm text-ink-500" aria-live="polite">
+      <Mail className="size-4" aria-hidden />
+      {state === 'sending' ? 'Sending your tickets by email…' : 'Tickets also sent to your email.'}
+    </p>
   )
 }
 
@@ -168,13 +277,17 @@ function StatusBox({ tone, title, text, children }: StatusBoxProps) {
     <div
       className={
         tone === 'success'
-          ? 'mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-center'
-          : 'mt-4 rounded-2xl border border-slate-200 bg-white p-4 text-center'
+          ? 'mt-5 rounded-3xl border border-emerald-200/80 bg-emerald-50/80 p-6 text-center backdrop-blur-sm'
+          : 'mt-5 rounded-3xl border border-white/70 bg-white/90 p-6 text-center shadow-soft backdrop-blur-sm'
       }
     >
-      {tone === 'success' && <CircleCheck className="mx-auto size-8 text-emerald-600" aria-hidden />}
-      <p className="mt-2 font-semibold">{title}</p>
-      <p className="mt-0.5 text-sm text-slate-600">{text}</p>
+      {tone === 'success' && (
+        <span className="mx-auto grid size-12 place-items-center rounded-2xl bg-emerald-100 text-emerald-600">
+          <CircleCheck className="size-6" aria-hidden />
+        </span>
+      )}
+      <p className="mt-3 text-lg font-extrabold tracking-tight text-ink-900">{title}</p>
+      <p className="mt-1 text-sm text-ink-500">{text}</p>
       <div className="mt-3 text-sm">{children}</div>
     </div>
   )

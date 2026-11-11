@@ -19,10 +19,16 @@ export function TicketTypeRow({ ticketType, quantity, canSelect, onChange }: Tic
     <li className="flex items-center justify-between gap-3 py-4">
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
-          <p className="font-medium text-slate-900">{ticketType.name}</p>
+          <p className="font-bold text-ink-900">{ticketType.name}</p>
           <AvailabilityBadge remaining={ticketType.remaining} />
         </div>
-        <p className={isSoldOut ? 'mt-0.5 text-sm text-slate-400 line-through' : 'mt-0.5 text-sm text-slate-600'}>
+        <p
+          className={
+            isSoldOut
+              ? 'mt-1 text-sm font-medium text-ink-400 line-through'
+              : 'mt-1 text-sm font-semibold text-ink-700'
+          }
+        >
           {formatRupiah(ticketType.price)}
         </p>
       </div>

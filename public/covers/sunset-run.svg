@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Sunset beach run illustration">
+  <defs>
+    <linearGradient id="run-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4c1d95"/>
+      <stop offset="0.45" stop-color="#db2777"/>
+      <stop offset="0.75" stop-color="#f97316"/>
+      <stop offset="1" stop-color="#fde68a"/>
+    </linearGradient>
+    <linearGradient id="run-sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0e7490"/>
+      <stop offset="1" stop-color="#082f49"/>
+    </linearGradient>
+    <radialGradient id="run-sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fffbeb"/>
+      <stop offset="1" stop-color="#fb923c"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#run-sky)"/>
+  <circle cx="560" cy="215" r="82" fill="url(#run-sun)"/>
+
+  <path d="M0 300 Q150 285 300 300 T600 298 T800 300 V450 H0 Z" fill="url(#run-sea)"/>
+  <g stroke="#f0fdfa" stroke-width="3" opacity="0.35" fill="none">
+    <path d="M20 330 Q100 320 180 330 T340 330"/>
+    <path d="M420 350 Q500 340 580 350 T740 350"/>
+    <path d="M80 386 Q160 376 240 386 T400 386"/>
+    <path d="M520 402 Q600 392 680 402 T800 402"/>
+  </g>
+
+  <path d="M0 408 Q200 380 420 404 T800 396 V450 H0 Z" fill="#fcd34d" opacity="0.55"/>
+
+  <g fill="#1e1b4b">
+    <circle cx="330" cy="250" r="17"/>
+    <path d="M336 270 L314 318 L334 322 L352 288 L374 330 L396 324 L362 270 Z"/>
+    <path d="M318 300 L286 330 L298 342 L332 314 Z"/>
+    <path d="M370 296 L404 314 L396 328 L358 312 Z"/>
+    <path d="M356 322 L368 360 L352 362 L340 328 Z"/>
+    <path d="M334 320 L310 356 L296 346 L320 312 Z"/>
+  </g>
+
+  <g fill="#fffbeb" opacity="0.7">
+    <circle cx="180" cy="120" r="3"/>
+    <circle cx="230" cy="170" r="2"/>
+    <circle cx="120" cy="215" r="2.5"/>
+    <circle cx="680" cy="110" r="3"/>
+    <circle cx="720" cy="180" r="2"/>
+  </g>
+
+  <g stroke="#fde68a" stroke-width="8" opacity="0.45" stroke-linecap="round">
+    <path d="M70 90 L120 70"/>
+    <path d="M640 90 L690 70"/>
+    <path d="M40 150 L90 130"/>
+    <path d="M710 150 L760 130"/>
+  </g>
+</svg>

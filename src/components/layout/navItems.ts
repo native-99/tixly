@@ -1,4 +1,14 @@
-import { CalendarDays, LayoutGrid, LogIn, Plus, ScanLine, Ticket, User, type LucideIcon } from 'lucide-react'
+import {
+  CalendarDays,
+  LayoutGrid,
+  LogIn,
+  Plus,
+  ReceiptText,
+  ScanLine,
+  Ticket,
+  User,
+  type LucideIcon,
+} from 'lucide-react'
 import { paths } from '@/routes/paths'
 import type { Role } from '@/types'
 
@@ -22,6 +32,7 @@ export function navItemsFor(role: Role | null): NavItem[] {
       return [
         { to: paths.events, label: 'Events', icon: CalendarDays },
         { to: paths.myTickets, label: 'My tickets', icon: Ticket },
+        { to: paths.orders, label: 'Orders', icon: ReceiptText },
         account,
       ]
     case 'organizer':

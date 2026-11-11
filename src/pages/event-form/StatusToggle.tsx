@@ -24,14 +24,21 @@ export function StatusToggle({ value, onChange }: StatusToggleProps) {
             aria-checked={isSelected}
             onClick={() => onChange(option.value)}
             className={cn(
-              'rounded-xl border p-3 text-left transition-colors',
-              isSelected ? 'border-brand-600 bg-brand-50 ring-1 ring-brand-600' : 'border-slate-200 bg-white',
+              'rounded-2xl border p-3.5 text-left transition-all duration-200',
+              isSelected
+                ? 'border-brand-400 bg-brand-50/80 shadow-soft ring-1 ring-brand-400/30'
+                : 'border-ink-200 bg-white/80 hover:border-brand-200 hover:bg-white',
             )}
           >
-            <p className={cn('text-sm font-semibold', isSelected ? 'text-brand-700' : 'text-slate-800')}>
+            <p
+              className={cn(
+                'text-sm font-bold',
+                isSelected ? 'text-brand-700' : 'text-ink-800',
+              )}
+            >
               {option.label}
             </p>
-            <p className="mt-0.5 text-xs text-slate-500">{option.hint}</p>
+            <p className="mt-0.5 text-xs text-ink-500">{option.hint}</p>
           </button>
         )
       })}

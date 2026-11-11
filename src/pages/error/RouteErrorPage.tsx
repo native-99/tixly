@@ -9,7 +9,7 @@ export default function RouteErrorPage() {
   return (
     <div className="mx-auto flex min-h-dvh max-w-md flex-col items-center justify-center px-4 text-center">
       <h1 className="text-xl font-semibold">Something went wrong</h1>
-      <p className="mt-1 text-sm text-slate-500">{message}</p>
+      <p className="mt-1 text-sm text-ink-500">{message}</p>
       <button
         type="button"
         onClick={() => window.location.reload()}

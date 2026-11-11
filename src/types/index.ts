@@ -14,6 +14,8 @@ export interface User {
 
 export type EventStatus = 'draft' | 'published'
 
+export type EventCategory = 'festival' | 'music' | 'comedy' | 'meetup' | 'sports' | 'arts'
+
 export interface Event {
   id: string
   organizerId: string
@@ -21,6 +23,7 @@ export interface Event {
   description: string
   venue: string
   city: string
+  category: EventCategory
   /** ISO 8601 date-time */
   startsAt: string
   posterUrl: string | null
@@ -73,10 +76,38 @@ export interface Order {
   expiresAt: string
   createdAt: string
   paidAt: string | null
+  /** "midtrans" for a real gateway, "simulated" for the in-app demo payment. */
+  paymentProvider: string | null
+  /** Gateway-hosted payment page, when there is one to redirect to. */
+  paymentUrl: string | null
+  /** Set once the ticket email has been handed to the mail server. */
+  ticketsEmailedAt: string | null
+}
+
+/** Order history row: the order plus the event, before opening the detail page. */
+export interface OrderSummary {
+  id: string
+  eventId: string
+  status: OrderStatus
+  total: number
+  expiresAt: string
+  createdAt: string
+  paidAt: string | null
+  ticketsEmailedAt: string | null
+  /** How many tickets were issued for this order. */
+  ticketCount: number
+  event: {
+    id: string
+    title: string
+    posterUrl: string | null
+    category: EventCategory
+    venue: string
+    city: string
+    startsAt: string
+  }
 }
 
 export type TicketStatus = 'issued' | 'checked_in'
-
 export interface Ticket {
   id: string
   orderId: string

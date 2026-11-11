@@ -1,22 +1,72 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: 'Plus Jakarta Sans', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Plus Jakarta Sans', 'Inter', ui-sans-serif, system-ui, sans-serif;
 
-  --color-brand-50: #eef2ff;
-  --color-brand-100: #e0e7ff;
+  --color-brand-50: #eef1ff;
+  --color-brand-100: #e0e5ff;
+  --color-brand-200: #c7cffe;
+  --color-brand-300: #a5affd;
+  --color-brand-400: #8189fb;
   --color-brand-500: #6366f1;
   --color-brand-600: #4f46e5;
   --color-brand-700: #4338ca;
+
+  --color-ink-50: #f8fafc;
+  --color-ink-100: #f1f5f9;
+  --color-ink-200: #e2e8f0;
+  --color-ink-300: #cbd5e1;
+  --color-ink-400: #94a3b8;
+  --color-ink-500: #64748b;
+  --color-ink-600: #475569;
+  --color-ink-700: #334155;
+  --color-ink-800: #1e293b;
+  --color-ink-900: #0f172a;
+
+  /* Soft, layered shadows instead of flat borders. */
+  --shadow-soft: 0 1px 2px rgb(15 23 42 / 0.04), 0 12px 32px -14px rgb(15 23 42 / 0.16);
+  --shadow-lift: 0 2px 4px rgb(15 23 42 / 0.05), 0 22px 48px -20px rgb(15 23 42 / 0.28);
+  --shadow-glow: 0 10px 28px -12px rgb(79 70 229 / 0.65);
+  --shadow-pill: 0 8px 30px -10px rgb(15 23 42 / 0.35);
 }
 
 @layer base {
   html {
     -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-slate-50 text-slate-900 antialiased;
+    @apply text-ink-900 antialiased;
     min-height: 100dvh;
+    background-color: #f6f7fb;
+    /* Soft colour wash behind the whole app. */
+    background-image:
+      radial-gradient(70rem 42rem at 50% -16rem, rgb(99 102 241 / 0.16), transparent 62%),
+      radial-gradient(38rem 30rem at 108% 4%, rgb(236 72 153 / 0.10), transparent 60%),
+      radial-gradient(34rem 26rem at -8% 22%, rgb(14 165 233 / 0.08), transparent 60%);
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+  }
+
+  ::selection {
+    background-color: rgb(99 102 241 / 0.22);
+  }
+}
+
+@layer components {
+  /* A card surface: soft border, layered shadow, generous radius. */
+  .surface {
+    @apply rounded-3xl border border-white/70 bg-white/85 shadow-soft backdrop-blur-sm;
+  }
+
+  .surface-flat {
+    @apply rounded-3xl border border-ink-100 bg-white shadow-soft;
   }
 }

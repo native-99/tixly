@@ -8,6 +8,7 @@ export const paths = {
   account: '/account',
   checkout: (orderId: string) => `/checkout/${orderId}`,
   myTickets: '/my-tickets',
+  orders: '/orders',
   organizerEvents: '/organizer',
   newEvent: '/organizer/events/new',
   editEvent: (eventId: string) => `/organizer/events/${eventId}/edit`,

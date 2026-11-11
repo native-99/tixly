@@ -8,11 +8,8 @@ export function BottomNav() {
   const items = navItemsFor(user?.role ?? null)
 
   return (
-    <nav
-      aria-label="Main"
-      className="fixed inset-x-0 bottom-0 z-20 border-t border-slate-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur"
-    >
-      <ul className="mx-auto flex max-w-md">
+    <nav aria-label="Main" className="fixed inset-x-0 bottom-0 z-20 px-4 pb-4 md:hidden">
+      <ul className="mx-auto flex max-w-md items-center gap-1 rounded-3xl border border-white/60 bg-white/80 p-1.5 shadow-pill backdrop-blur-xl">
         {items.map((item) => (
           <li key={item.to} className="flex-1">
             <NavLink
@@ -20,8 +17,10 @@ export function BottomNav() {
               end
               className={({ isActive }) =>
                 cn(
-                  'flex h-16 flex-col items-center justify-center gap-1 text-xs font-medium transition-colors',
-                  isActive ? 'text-brand-600' : 'text-slate-500 hover:text-slate-800',
+                  'flex min-h-12 flex-col items-center justify-center gap-1 rounded-2xl px-1 text-[10px] font-semibold whitespace-nowrap transition-all duration-200 min-[360px]:text-[11px]',
+                  isActive
+                    ? 'bg-linear-to-br from-brand-500 to-brand-700 text-white shadow-glow'
+                    : 'text-ink-500 hover:bg-ink-900/5 hover:text-ink-900',
                 )
               }
             >

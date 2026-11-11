@@ -2,7 +2,7 @@
 // Kept separate from the UI so the rules are easy to read and test.
 
 import type { EventInput, TicketTypeInput } from '@/services'
-import type { EventDetail, EventStatus } from '@/types'
+import type { EventCategory, EventDetail, EventStatus } from '@/types'
 
 export interface TicketTypeDraft {
   /** Stable React key; also used to attach row errors. */
@@ -20,6 +20,7 @@ export interface TicketTypeDraft {
 export interface EventFormValues {
   title: string
   description: string
+  category: EventCategory
   venue: string
   city: string
   /** "YYYY-MM-DDTHH:mm" in local time, as used by <input type="datetime-local"> */
@@ -64,6 +65,7 @@ export function emptyValues(): EventFormValues {
   return {
     title: '',
     description: '',
+    category: 'festival',
     venue: '',
     city: '',
     startsAtLocal: '',
@@ -88,6 +90,7 @@ export function valuesFromEvent(event: EventDetail): EventFormValues {
   return {
     title: event.title,
     description: event.description,
+    category: event.category,
     venue: event.venue,
     city: event.city,
     startsAtLocal: isoToLocalInput(event.startsAt),
@@ -142,6 +145,7 @@ export function toEventInput(values: EventFormValues): EventInput {
   return {
     title: values.title.trim(),
     description: values.description.trim(),
+    category: values.category,
     venue: values.venue.trim(),
     city: values.city.trim(),
     startsAt: new Date(values.startsAtLocal).toISOString(),

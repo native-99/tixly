@@ -11,11 +11,13 @@ interface EmptyStateProps {
 
 export function EmptyState({ title, description, action }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center">
-      <Inbox className="size-8 text-slate-400" aria-hidden />
-      <p className="mt-3 font-semibold text-slate-800">{title}</p>
-      {description && <p className="mt-1 text-sm text-slate-500">{description}</p>}
-      {action && <div className="mt-5">{action}</div>}
+    <div className="flex flex-col items-center rounded-3xl border border-dashed border-ink-200 bg-white/70 px-6 py-14 text-center backdrop-blur-sm">
+      <span className="grid size-14 place-items-center rounded-2xl bg-linear-to-br from-brand-100 to-brand-50 text-brand-600">
+        <Inbox className="size-6" aria-hidden />
+      </span>
+      <p className="mt-4 text-lg font-bold tracking-tight text-ink-900">{title}</p>
+      {description && <p className="mt-1.5 max-w-sm text-sm text-ink-500">{description}</p>}
+      {action && <div className="mt-6">{action}</div>}
     </div>
   )
 }
@@ -29,13 +31,15 @@ export function ErrorState({ error, onRetry }: ErrorStateProps) {
   return (
     <div
       role="alert"
-      className="flex flex-col items-center rounded-2xl border border-red-200 bg-red-50 px-6 py-10 text-center"
+      className="flex flex-col items-center rounded-3xl border border-red-200/80 bg-red-50/70 px-6 py-12 text-center backdrop-blur-sm"
     >
-      <CircleAlert className="size-8 text-red-500" aria-hidden />
-      <p className="mt-3 font-semibold text-red-800">Couldn't load this</p>
-      <p className="mt-1 text-sm text-red-700">{getErrorMessage(error)}</p>
+      <span className="grid size-14 place-items-center rounded-2xl bg-red-100 text-red-500">
+        <CircleAlert className="size-6" aria-hidden />
+      </span>
+      <p className="mt-4 text-lg font-bold tracking-tight text-red-900">Couldn't load this</p>
+      <p className="mt-1.5 max-w-sm text-sm text-red-700/90">{getErrorMessage(error)}</p>
       {onRetry && (
-        <Button variant="secondary" className="mt-5" onClick={onRetry}>
+        <Button variant="secondary" className="mt-6" onClick={onRetry}>
           <RefreshCw className="size-4" aria-hidden />
           Try again
         </Button>
@@ -45,5 +49,5 @@ export function ErrorState({ error, onRetry }: ErrorStateProps) {
 }
 
 export function Skeleton({ className }: { className: string }) {
-  return <div className={`animate-pulse rounded-xl bg-slate-200 ${className}`} aria-hidden />
+  return <div className={`animate-pulse rounded-2xl bg-ink-200/70 ${className}`} aria-hidden />
 }

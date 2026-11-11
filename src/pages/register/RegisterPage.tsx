@@ -47,10 +47,14 @@ export default function RegisterPage() {
 
   return (
     <>
-      <h1 className="text-2xl font-bold tracking-tight">Create your account</h1>
-      <p className="mt-1 text-sm text-slate-500">Buy tickets in seconds and keep them on your phone.</p>
+      <h1 className="text-2xl font-extrabold tracking-tight text-ink-900 md:text-3xl">
+        Create your account
+      </h1>
+      <p className="mt-1.5 text-sm text-ink-500">
+        Buy tickets in seconds and keep them on your phone.
+      </p>
 
-      <form onSubmit={handleSubmit} className="mt-6 space-y-4" noValidate>
+      <form onSubmit={handleSubmit} className="mt-7 space-y-4" noValidate>
         {signUpMutation.isError && <ErrorAlert>{getErrorMessage(signUpMutation.error)}</ErrorAlert>}
 
         <TextField
@@ -84,9 +88,9 @@ export default function RegisterPage() {
         </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-slate-600">
+      <p className="mt-7 text-center text-sm text-ink-600">
         Already have an account?{' '}
-        <Link to={loginLink} className="font-semibold text-brand-600">
+        <Link to={loginLink} className="font-bold text-brand-700">
           Log in
         </Link>
       </p>

@@ -12,6 +12,7 @@ import LoginPage from '@/pages/login/LoginPage'
 import MyTicketsPage from '@/pages/my-tickets/MyTicketsPage'
 import NotFoundPage from '@/pages/not-found/NotFoundPage'
 import OrganizerEventsPage from '@/pages/organizer-events/OrganizerEventsPage'
+import OrdersPage from '@/pages/orders/OrdersPage'
 import RegisterPage from '@/pages/register/RegisterPage'
 import ScanPage from '@/pages/scan/ScanPage'
 import { GuestOnly, RequireAuth } from './guards'
@@ -40,6 +41,7 @@ export const router = createBrowserRouter([
             children: [
               { path: 'checkout/:orderId', element: <CheckoutPage /> },
               { path: 'my-tickets', element: <MyTicketsPage /> },
+              { path: 'orders', element: <OrdersPage /> },
             ],
           },
 

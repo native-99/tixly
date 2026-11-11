@@ -8,6 +8,7 @@ import type {
   EventDetail,
   EventSummary,
   Order,
+  OrderSummary,
   TicketType,
   TicketWithDetails,
   User,
@@ -25,11 +26,15 @@ export interface AuthService {
   /** Public sign-up always creates a buyer account. */
   signUp(input: SignUpInput): Promise<User>
   signOut(): Promise<void>
+  /** Emails a one-time login link. `redirectTo` is where the link returns to. */
+  sendMagicLink(email: string, redirectTo?: string): Promise<void>
+  /** Optional live session updates (token refresh, magic link, other tabs). */
+  onAuthChange?(callback: (user: User | null) => void): () => void
 }
 
 export type EventInput = Pick<
   Event,
-  'title' | 'description' | 'venue' | 'city' | 'startsAt' | 'posterUrl' | 'status'
+  'title' | 'description' | 'category' | 'venue' | 'city' | 'startsAt' | 'posterUrl' | 'status'
 >
 
 export type TicketTypeInput = Pick<TicketType, 'name' | 'price' | 'quota'>
@@ -53,13 +58,33 @@ export interface CheckoutItemInput {
   quantity: number
 }
 
+export interface PaymentSession {
+  /** Where the buyer should be sent. null when the payment happens in-app. */
+  redirectUrl: string | null
+  /** True when no gateway is configured and the demo payment runs instead. */
+  simulated: boolean
+}
+
+export interface TicketEmailResult {
+  sent: boolean
+  alreadySent?: boolean
+  emailedAt: string | null
+  to?: string
+}
+
 export interface OrderService {
   /** Reserves the tickets and holds them for HOLD_MINUTES. */
   createOrder(eventId: string, items: CheckoutItemInput[]): Promise<Order>
   getById(orderId: string): Promise<Order | null>
+  /** Starts a gateway payment for this order. */
+  startPayment(orderId: string): Promise<PaymentSession>
   /** Simulated payment success: marks the order paid and issues tickets. */
   payOrder(orderId: string): Promise<Order>
   cancelOrder(orderId: string): Promise<Order>
+  /** Emails the tickets for a paid order. Safe to call twice. */
+  sendTickets(orderId: string, options?: { resend?: boolean }): Promise<TicketEmailResult>
+  /** The buyer's orders, newest first (paid, pending, expired and cancelled). */
+  listMine(): Promise<OrderSummary[]>
 }
 
 export interface TicketService {

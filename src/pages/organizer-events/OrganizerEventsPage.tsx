@@ -17,10 +17,10 @@ export default function OrganizerEventsPage() {
   const newEventLink = (
     <Link
       to={paths.newEvent}
-      className="inline-flex min-h-11 items-center gap-1.5 rounded-xl bg-brand-600 px-4 text-sm font-semibold text-white"
+      className="inline-flex min-h-11 items-center gap-1.5 rounded-2xl bg-linear-to-br from-brand-500 to-brand-700 px-4 text-sm font-semibold text-white shadow-glow transition-all hover:brightness-110 active:scale-[0.98]"
     >
       <Plus className="size-4" aria-hidden />
-      New
+      New event
     </Link>
   )
 
@@ -29,7 +29,8 @@ export default function OrganizerEventsPage() {
       <PageHeader title="My events" description="Manage events and track sales." action={newEventLink} />
 
       {eventsQuery.isPending ? (
-        <div className="space-y-4">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <Skeleton className="h-48 w-full rounded-2xl" />
           <Skeleton className="h-48 w-full rounded-2xl" />
           <Skeleton className="h-48 w-full rounded-2xl" />
         </div>
@@ -42,7 +43,7 @@ export default function OrganizerEventsPage() {
           action={newEventLink}
         />
       ) : (
-        <ul className="space-y-4">
+        <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {eventsQuery.data.map((event) => (
             <li key={event.id}>
               <OrganizerEventCard event={event} />

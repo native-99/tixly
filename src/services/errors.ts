@@ -8,6 +8,7 @@ export type AppErrorCode =
   | 'ORDER_EXPIRED'
   | 'INVALID_STATE'
   | 'VALIDATION'
+  | 'PAYMENT'
 
 export class AppError extends Error {
   readonly code: AppErrorCode

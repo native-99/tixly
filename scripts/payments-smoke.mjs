@@ -30,7 +30,7 @@ const appEnv = readEnv('.env.local')
 const fnEnv = readEnv('supabase/functions/.env')
 
 const SUPABASE_URL = appEnv.VITE_SUPABASE_URL
-const ANON_KEY = appEnv.VITE_SUPABASE_ANON_KEY
+const ANON_KEY = appEnv.VITE_SUPABASE_PUBLISHABLE_KEY || appEnv.VITE_SUPABASE_ANON_KEY
 const SERVICE_KEY = appEnv.SUPABASE_SERVICE_ROLE_KEY
 const SERVER_KEY = fnEnv.MIDTRANS_SERVER_KEY
 // The Edge runtime uses the docker alias; this script runs on the host.

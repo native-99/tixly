@@ -27,9 +27,9 @@ export default function AccountPage() {
 
   return (
     <div className="mx-auto w-full max-w-xl">
-      <PageHeader title="Account" />
+      <PageHeader eyebrow="Profile" title="Account" description="Your account and session." />
 
-      <section className="overflow-hidden rounded-3xl border border-white/70 bg-white/90 shadow-soft backdrop-blur-sm">
+      <section className="overflow-hidden rounded-3xl bg-white/90 shadow-soft ring-1 ring-ink-900/5 backdrop-blur-xl">
         <div className="bg-linear-to-br from-brand-600 via-brand-700 to-violet-600 px-5 py-7 text-white">
           <div className="flex items-center gap-4">
             <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-white/20 text-xl font-extrabold backdrop-blur">

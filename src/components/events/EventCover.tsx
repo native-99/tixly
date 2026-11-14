@@ -32,11 +32,12 @@ export function EventCover({ event, className }: EventCoverProps) {
       className={cn('relative overflow-hidden bg-linear-to-br', gradient, className)}
       aria-hidden
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(255,255,255,0.45),transparent_50%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.25)_1px,transparent_1px)] [background-size:20px_20px] opacity-35" />
-      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-white/10 to-transparent" />
-      <CategoryIcon className="absolute -right-4 -bottom-6 size-36 rotate-[-12deg] text-white/25" />
-      <Ticket className="absolute top-4 right-16 size-11 rotate-12 text-white/15" />
+      {/* Soft light blooms instead of a flat gradient. */}
+      <div className="absolute -top-1/3 -right-1/4 size-2/3 rounded-full bg-white/30 blur-3xl" />
+      <div className="absolute -bottom-1/3 -left-1/5 size-2/3 rounded-full bg-white/20 blur-3xl" />
+      <div className="absolute inset-0 bg-[linear-gradient(115deg,transparent_38%,rgba(255,255,255,0.22)_50%,transparent_62%)]" />
+      <CategoryIcon className="absolute -right-5 -bottom-7 size-40 rotate-[-12deg] text-white/25" />
+      <Ticket className="absolute top-5 right-14 size-9 rotate-12 text-white/15" />
     </div>
   )
 }

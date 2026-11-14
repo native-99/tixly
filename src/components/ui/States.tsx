@@ -11,8 +11,8 @@ interface EmptyStateProps {
 
 export function EmptyState({ title, description, action }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center rounded-3xl border border-dashed border-ink-200 bg-white/70 px-6 py-14 text-center backdrop-blur-sm">
-      <span className="grid size-14 place-items-center rounded-2xl bg-linear-to-br from-brand-100 to-brand-50 text-brand-600">
+    <div className="flex flex-col items-center rounded-3xl bg-white/70 px-6 py-14 text-center ring-1 ring-ink-900/5 backdrop-blur-xl">
+      <span className="grid size-14 place-items-center rounded-2xl bg-linear-to-br from-brand-100 to-brand-50 text-brand-600 ring-1 ring-brand-500/10">
         <Inbox className="size-6" aria-hidden />
       </span>
       <p className="mt-4 text-lg font-bold tracking-tight text-ink-900">{title}</p>
@@ -31,13 +31,13 @@ export function ErrorState({ error, onRetry }: ErrorStateProps) {
   return (
     <div
       role="alert"
-      className="flex flex-col items-center rounded-3xl border border-red-200/80 bg-red-50/70 px-6 py-12 text-center backdrop-blur-sm"
+      className="flex flex-col items-center rounded-3xl bg-red-50/70 px-6 py-12 text-center ring-1 ring-red-200/70 backdrop-blur-xl"
     >
       <span className="grid size-14 place-items-center rounded-2xl bg-red-100 text-red-500">
         <CircleAlert className="size-6" aria-hidden />
       </span>
-      <p className="mt-4 text-lg font-bold tracking-tight text-red-900">Couldn't load this</p>
-      <p className="mt-1.5 max-w-sm text-sm text-red-700/90">{getErrorMessage(error)}</p>
+      <p className="mt-4 text-lg font-bold tracking-tight text-ink-900">Couldn't load this</p>
+      <p className="mt-1.5 max-w-sm text-sm text-ink-600">{getErrorMessage(error)}</p>
       {onRetry && (
         <Button variant="secondary" className="mt-6" onClick={onRetry}>
           <RefreshCw className="size-4" aria-hidden />
@@ -49,5 +49,5 @@ export function ErrorState({ error, onRetry }: ErrorStateProps) {
 }
 
 export function Skeleton({ className }: { className: string }) {
-  return <div className={`animate-pulse rounded-2xl bg-ink-200/70 ${className}`} aria-hidden />
+  return <div className={`skeleton animate-shimmer ${className}`} aria-hidden />
 }

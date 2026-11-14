@@ -37,7 +37,11 @@ export default function OrdersPage() {
 
   return (
     <div className="mx-auto w-full max-w-3xl">
-      <PageHeader title="Orders" description="Every ticket order, with its payment status." />
+      <PageHeader
+        eyebrow="Purchase history"
+        title="Orders"
+        description="Every ticket order, with its payment status."
+      />
 
       <OfflineBanner usingCache={usingCache} cachedHint="payment status may be out of date" />
 
@@ -77,7 +81,7 @@ function OrderCard({ order }: { order: OrderSummary }) {
   const isPaid = order.status === 'paid'
 
   return (
-    <article className="overflow-hidden rounded-3xl border border-white/70 bg-white/90 shadow-soft backdrop-blur-sm">
+    <article className="overflow-hidden rounded-3xl bg-white/90 shadow-soft ring-1 ring-ink-900/5 backdrop-blur-xl">
       <div className="flex gap-3 p-4 sm:gap-4 sm:p-5">
         <EventCover
           event={order.event}

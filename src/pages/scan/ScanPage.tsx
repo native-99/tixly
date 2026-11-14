@@ -80,7 +80,7 @@ export default function ScanPage() {
             key={sample.code}
             type="button"
             onClick={() => submit(sample.code)}
-            className="rounded-full border border-ink-200 bg-white/90 px-3.5 py-2 font-semibold text-ink-700 shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-700 hover:shadow-soft"
+            className="rounded-full bg-white/90 px-3.5 py-2 font-semibold text-ink-700 shadow-soft ring-1 ring-ink-900/5 transition-all duration-200 hover:-translate-y-0.5 hover:text-brand-700 hover:ring-brand-500/25"
           >
             {sample.label}
           </button>

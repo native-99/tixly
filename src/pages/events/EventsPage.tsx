@@ -34,11 +34,11 @@ export default function EventsPage() {
 
   return (
     <>
-      <PageHeader title="Upcoming events" description="Concerts, comedy, meetups and more." />
+      <PageHeader eyebrow="Discover" title="Upcoming events" description="Concerts, comedy, meetups and more." />
 
-      <div className="mb-6 rounded-3xl border border-white/70 bg-white/85 p-3 shadow-soft backdrop-blur-sm">
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,170px)_minmax(0,170px)_minmax(0,170px)_auto]">
-          <label className="relative block sm:col-span-2 lg:col-span-1">
+      <div className="mb-6 rounded-3xl bg-white/90 p-3 shadow-soft ring-1 ring-ink-900/5 backdrop-blur-xl">
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,170px)_minmax(0,170px)_minmax(0,170px)_auto]">
+          <label className="relative block col-span-2 lg:col-span-1">
             <span className="sr-only">Search events</span>
             <Search
               className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-ink-400"
@@ -49,7 +49,7 @@ export default function EventsPage() {
               value={filters.query}
               onChange={(event) => update('query', event.target.value)}
               placeholder="Search events, venues, cities…"
-              className="block min-h-12 w-full rounded-2xl border border-ink-200 bg-white/90 pr-4 pl-11 text-base text-ink-900 shadow-sm transition-all placeholder:text-ink-400 focus:border-brand-400 focus:bg-white focus:ring-4 focus:ring-brand-500/12 focus:outline-none"
+              className="block min-h-12 w-full rounded-2xl bg-white/90 pr-4 pl-11 text-base text-ink-900 ring-1 ring-ink-900/10 transition-all duration-200 placeholder:text-ink-400 hover:ring-ink-900/15 focus:bg-white focus:ring-4 focus:ring-brand-500/12 focus:outline-none"
             />
           </label>
 
@@ -160,7 +160,7 @@ function FilterSelect({ label, value, options, onChange }: FilterSelectProps) {
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="block min-h-12 w-full rounded-2xl border border-ink-200 bg-white/90 px-4 text-base font-medium text-ink-700 shadow-sm transition-all focus:border-brand-400 focus:bg-white focus:ring-4 focus:ring-brand-500/12 focus:outline-none"
+        className="block min-h-12 w-full rounded-2xl bg-white/90 px-4 text-base font-medium text-ink-700 ring-1 ring-ink-900/10 transition-all duration-200 hover:ring-ink-900/15 focus:bg-white focus:ring-4 focus:ring-brand-500/12 focus:outline-none"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>

@@ -38,9 +38,11 @@ export function SelectField({
           aria-invalid={error ? true : undefined}
           aria-describedby={describedBy}
           className={cn(
-            'block min-h-12 w-full appearance-none rounded-2xl border bg-white/90 pr-11 pl-4 text-base font-medium text-ink-900 shadow-sm transition-all',
-            'focus:border-brand-400 focus:bg-white focus:ring-4 focus:ring-brand-500/12 focus:outline-none',
-            error ? 'border-red-300' : 'border-ink-200',
+            'block min-h-12 w-full appearance-none rounded-2xl bg-white/90 pr-11 pl-4 text-base font-medium text-ink-900 ring-1 transition-all duration-200',
+            'focus:bg-white focus:ring-4 focus:outline-none',
+            error
+              ? 'ring-red-300 focus:ring-red-400 focus:ring-red-500/12'
+              : 'ring-ink-900/10 hover:ring-ink-900/15 focus:ring-brand-400 focus:ring-brand-500/12',
           )}
           {...rest}
         >

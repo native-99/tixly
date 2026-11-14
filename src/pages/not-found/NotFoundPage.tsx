@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import { buttonClasses } from '@/components/ui/buttonStyles'
 import { paths } from '@/routes/paths'
 
 export default function NotFoundPage() {
@@ -9,7 +10,7 @@ export default function NotFoundPage() {
       <p className="mt-1 text-sm text-ink-500">The page you're looking for doesn't exist.</p>
       <Link
         to={paths.events}
-        className="mt-6 inline-flex min-h-11 items-center rounded-xl bg-brand-600 px-4 text-sm font-semibold text-white"
+        className={`mt-6 ${buttonClasses('primary')}`}
       >
         Browse events
       </Link>

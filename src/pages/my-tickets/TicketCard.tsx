@@ -18,25 +18,25 @@ export function TicketCard({ ticket, position, total }: TicketCardProps) {
   const closeQr = useCallback(() => setQrOpen(false), [])
 
   return (
-    <article className="overflow-hidden rounded-3xl border border-white/70 bg-white/90 shadow-soft backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lift">
-      <div className="relative bg-linear-to-br from-brand-600 via-brand-700 to-violet-600 px-5 py-4 text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_10%,rgba(255,255,255,0.28),transparent_45%)]" />
+    <article className="overflow-hidden rounded-3xl bg-white/90 shadow-soft ring-1 ring-ink-900/5 backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lift">
+      <div className="relative overflow-hidden bg-linear-to-br from-brand-500 via-brand-600 to-violet-600 px-5 py-4 text-white">
+        <div className="absolute -top-10 -right-6 size-32 rounded-full bg-white/20 blur-2xl" />
         <div className="relative flex items-start justify-between gap-3">
           <div className="min-w-0">
             <p className="text-xs font-bold tracking-widest uppercase opacity-80">
               {ticket.ticketTypeName}
             </p>
-            <p className="mt-1 truncate text-base font-extrabold">{ticket.event.title}</p>
+            <p className="mt-1 truncate text-base font-extrabold tracking-[-0.02em]">{ticket.event.title}</p>
             <p className="mt-0.5 text-xs font-medium opacity-80">
               {formatDateTime(ticket.event.startsAt)} · {ticket.event.venue}, {ticket.event.city}
             </p>
           </div>
           {isUsed ? (
-            <span className="shrink-0 rounded-full bg-ink-900/30 px-2.5 py-1 text-xs font-bold ring-1 ring-white/25 ring-inset">
+            <span className="shrink-0 rounded-full bg-ink-950/25 px-2.5 py-1 text-[11px] font-bold ring-1 ring-white/20 ring-inset">
               Used
             </span>
           ) : (
-            <span className="shrink-0 rounded-full bg-white/20 px-2.5 py-1 text-xs font-bold ring-1 ring-white/30 ring-inset backdrop-blur">
+            <span className="shrink-0 rounded-full bg-white/20 px-2.5 py-1 text-[11px] font-bold ring-1 ring-white/25 ring-inset backdrop-blur">
               Valid
             </span>
           )}
@@ -46,10 +46,9 @@ export function TicketCard({ ticket, position, total }: TicketCardProps) {
         </p>
       </div>
 
-      {/* Tear line with side notches, like a paper ticket */}
-      <div className="relative h-0 border-t-2 border-dashed border-ink-200/80">
-        <span className="absolute -top-3 -left-3 size-6 rounded-full bg-[#f6f7fb]" />
-        <span className="absolute -top-3 -right-3 size-6 rounded-full bg-[#f6f7fb]" />
+      {/* Perforated seam between the ticket header and the code */}
+      <div className="relative h-px bg-ink-200/60">
+        <div className="absolute inset-x-6 -top-1 border-t-2 border-dashed border-ink-200/80" />
       </div>
 
       <div className="flex flex-col items-center p-6">
@@ -57,8 +56,8 @@ export function TicketCard({ ticket, position, total }: TicketCardProps) {
           type="button"
           onClick={() => setQrOpen(true)}
           aria-label={`Enlarge QR code for ticket ${ticket.code}`}
-          className={`cursor-zoom-in rounded-3xl border-2 border-dashed p-4 transition-colors hover:border-brand-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 ${
-            isUsed ? 'border-ink-200/70 opacity-35' : 'border-ink-200/80'
+          className={`cursor-zoom-in rounded-3xl bg-ink-50/80 p-4 ring-1 transition-all duration-200 hover:bg-white hover:ring-brand-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 ${
+            isUsed ? 'ring-ink-200/70 opacity-40' : 'ring-ink-900/5'
           }`}
         >
           <QRCodeSVG value={ticket.code} size={176} level="M" title={`QR code for ticket ${ticket.code}`} />

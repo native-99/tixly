@@ -19,7 +19,10 @@ export function AppShell() {
           isEventDetail ? 'pb-8' : 'pb-28',
         )}
       >
-        <Outlet />
+        {/* A short rise on every route change keeps pages from feeling static. */}
+        <div key={pathname} className="animate-rise">
+          <Outlet />
+        </div>
       </main>
       {!isEventDetail && <BottomNav />}
     </div>

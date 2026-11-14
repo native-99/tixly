@@ -12,6 +12,7 @@
   --color-brand-500: #6366f1;
   --color-brand-600: #4f46e5;
   --color-brand-700: #4338ca;
+  --color-brand-800: #3730a3;
 
   --color-ink-50: #f8fafc;
   --color-ink-100: #f1f5f9;
@@ -23,12 +24,49 @@
   --color-ink-700: #334155;
   --color-ink-800: #1e293b;
   --color-ink-900: #0f172a;
+  --color-ink-950: #020617;
 
-  /* Soft, layered shadows instead of flat borders. */
-  --shadow-soft: 0 1px 2px rgb(15 23 42 / 0.04), 0 12px 32px -14px rgb(15 23 42 / 0.16);
-  --shadow-lift: 0 2px 4px rgb(15 23 42 / 0.05), 0 22px 48px -20px rgb(15 23 42 / 0.28);
-  --shadow-glow: 0 10px 28px -12px rgb(79 70 229 / 0.65);
-  --shadow-pill: 0 8px 30px -10px rgb(15 23 42 / 0.35);
+  /* Layered, low-contrast shadows instead of flat borders. */
+  --shadow-soft: 0 1px 2px rgb(15 23 42 / 0.04), 0 10px 30px -16px rgb(15 23 42 / 0.20);
+  --shadow-lift: 0 2px 6px rgb(15 23 42 / 0.05), 0 26px 52px -24px rgb(15 23 42 / 0.32);
+  --shadow-glow: 0 12px 30px -14px rgb(79 70 229 / 0.55);
+  --shadow-pill: 0 10px 34px -12px rgb(15 23 42 / 0.38);
+  --shadow-float: 0 18px 46px -20px rgb(15 23 42 / 0.30);
+
+  /* Motion: quick, soft, never bouncy. */
+  --animate-rise: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-shimmer: shimmer 1.7s ease-in-out infinite;
+  --animate-drift: drift 12s ease-in-out infinite;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 14px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -160% 0;
+    }
+    100% {
+      background-position: 160% 0;
+    }
+  }
+
+  @keyframes drift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(0, -18px, 0) scale(1.06);
+    }
+  }
 }
 
 @layer base {
@@ -40,12 +78,13 @@
   body {
     @apply text-ink-900 antialiased;
     min-height: 100dvh;
-    background-color: #f6f7fb;
-    /* Soft colour wash behind the whole app. */
+    background-color: #f7f8fc;
+    /* A soft mesh wash behind the whole app. */
     background-image:
-      radial-gradient(70rem 42rem at 50% -16rem, rgb(99 102 241 / 0.16), transparent 62%),
-      radial-gradient(38rem 30rem at 108% 4%, rgb(236 72 153 / 0.10), transparent 60%),
-      radial-gradient(34rem 26rem at -8% 22%, rgb(14 165 233 / 0.08), transparent 60%);
+      radial-gradient(60rem 38rem at 12% -14rem, rgb(99 102 241 / 0.16), transparent 60%),
+      radial-gradient(42rem 30rem at 92% -6rem, rgb(139 92 246 / 0.14), transparent 58%),
+      radial-gradient(38rem 28rem at 108% 40%, rgb(236 72 153 / 0.08), transparent 60%),
+      radial-gradient(34rem 26rem at -10% 30%, rgb(14 165 233 / 0.08), transparent 60%);
     background-attachment: fixed;
   }
 
@@ -53,20 +92,40 @@
   h2,
   h3 {
     font-family: var(--font-display);
+    letter-spacing: -0.022em;
   }
 
   ::selection {
     background-color: rgb(99 102 241 / 0.22);
   }
+
+  /* Slim, unobtrusive scrollbars. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(148 163 184 / 0.45) transparent;
+  }
 }
 
 @layer components {
-  /* A card surface: soft border, layered shadow, generous radius. */
+  /* The app's card surface: hairline ring, layered shadow, soft blur. */
   .surface {
-    @apply rounded-3xl border border-white/70 bg-white/85 shadow-soft backdrop-blur-sm;
+    @apply rounded-3xl bg-white/90 shadow-soft ring-1 ring-ink-900/5 backdrop-blur-xl;
   }
 
   .surface-flat {
-    @apply rounded-3xl border border-ink-100 bg-white shadow-soft;
+    @apply rounded-3xl bg-white shadow-soft ring-1 ring-ink-900/5;
+  }
+
+  /* Skeleton placeholder with a moving highlight instead of a flat pulse. */
+  .skeleton {
+    @apply rounded-2xl bg-ink-200/60;
+    background-image: linear-gradient(
+      100deg,
+      transparent 20%,
+      rgb(255 255 255 / 0.75) 50%,
+      transparent 80%
+    );
+    background-size: 220% 100%;
+    background-repeat: no-repeat;
   }
 }

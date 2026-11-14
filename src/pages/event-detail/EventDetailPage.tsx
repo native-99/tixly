@@ -110,7 +110,7 @@ function EventDetailView({ event }: { event: EventDetail }) {
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(320px,380px)] lg:items-start lg:gap-10">
         <div>
-          <div className="relative overflow-hidden rounded-3xl shadow-lift">
+          <div className="relative overflow-hidden rounded-3xl shadow-lift ring-1 ring-ink-900/5">
             <EventCover event={event} className="aspect-[16/9] w-full" />
           </div>
 
@@ -120,16 +120,16 @@ function EventDetailView({ event }: { event: EventDetail }) {
               {event.status === 'draft' && <Badge>Draft</Badge>}
             </div>
 
-            <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-ink-900 md:text-4xl">
+            <h1 className="mt-3 text-3xl font-extrabold tracking-[-0.03em] text-ink-900 md:text-4xl">
               {event.title}
             </h1>
 
             <ul className="mt-4 flex flex-wrap gap-2">
-              <li className="inline-flex items-center gap-2 rounded-2xl border border-white/70 bg-white/85 px-3.5 py-2 text-sm font-medium text-ink-700 shadow-soft backdrop-blur-sm">
+              <li className="inline-flex items-center gap-2 rounded-2xl bg-white/90 px-3.5 py-2 text-sm font-medium text-ink-700 shadow-soft ring-1 ring-ink-900/5 backdrop-blur-xl">
                 <CalendarDays className="size-4 text-brand-600" aria-hidden />
                 {formatDateTime(event.startsAt)}
               </li>
-              <li className="inline-flex items-center gap-2 rounded-2xl border border-white/70 bg-white/85 px-3.5 py-2 text-sm font-medium text-ink-700 shadow-soft backdrop-blur-sm">
+              <li className="inline-flex items-center gap-2 rounded-2xl bg-white/90 px-3.5 py-2 text-sm font-medium text-ink-700 shadow-soft ring-1 ring-ink-900/5 backdrop-blur-xl">
                 <MapPin className="size-4 text-brand-600" aria-hidden />
                 {event.venue}, {event.city}
               </li>
@@ -140,8 +140,8 @@ function EventDetailView({ event }: { event: EventDetail }) {
         </div>
 
         <aside className="lg:sticky lg:top-24">
-          <section className="overflow-hidden rounded-3xl border border-white/70 bg-white/90 shadow-lift backdrop-blur-sm">
-            <div className="bg-linear-to-r from-brand-600 to-violet-600 px-5 py-3.5 text-white">
+          <section className="overflow-hidden rounded-3xl bg-white/90 shadow-lift ring-1 ring-ink-900/5 backdrop-blur-xl">
+            <div className="bg-linear-to-r from-brand-500 to-brand-600 px-5 py-3.5 text-white">
               <h2 className="text-base font-bold">Tickets</h2>
             </div>
             {event.ticketTypes.length === 0 ? (
@@ -210,7 +210,7 @@ function EventDetailView({ event }: { event: EventDetail }) {
 
       {canBuy && totalQuantity > 0 && (
         <div className="fixed inset-x-0 bottom-0 z-30 px-4 pb-4 lg:hidden">
-          <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 rounded-3xl border border-white/60 bg-white/85 px-4 py-3 shadow-pill backdrop-blur-xl">
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 rounded-3xl bg-white/85 px-4 py-3 shadow-pill ring-1 ring-ink-900/5 backdrop-blur-2xl">
             <div>
               <p className="text-xs font-medium text-ink-500">
                 {totalQuantity} ticket{totalQuantity > 1 ? 's' : ''}

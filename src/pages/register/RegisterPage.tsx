@@ -47,7 +47,7 @@ export default function RegisterPage() {
 
   return (
     <>
-      <h1 className="text-2xl font-extrabold tracking-tight text-ink-900 md:text-3xl">
+      <h1 className="text-3xl font-extrabold tracking-[-0.03em] text-ink-900">
         Create your account
       </h1>
       <p className="mt-1.5 text-sm text-ink-500">

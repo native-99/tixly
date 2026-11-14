@@ -154,7 +154,7 @@ export function EventForm({ eventId, initialValues }: EventFormProps) {
 
       {/* Mobile: a floating bar keeps the action within reach. */}
       <div className="fixed inset-x-0 bottom-0 z-10 px-4 pb-4 md:hidden">
-        <div className="mx-auto flex max-w-2xl gap-3 rounded-3xl border border-white/60 bg-white/85 p-2 shadow-pill backdrop-blur-xl">
+        <div className="mx-auto flex max-w-2xl gap-3 rounded-3xl bg-white/85 p-2 shadow-pill ring-1 ring-ink-900/5 backdrop-blur-2xl">
           <Button variant="secondary" className="flex-1" onClick={() => navigate(paths.organizerEvents)}>
             Cancel
           </Button>
@@ -179,7 +179,7 @@ export function EventForm({ eventId, initialValues }: EventFormProps) {
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="rounded-3xl border border-white/70 bg-white/85 p-5 shadow-soft backdrop-blur-sm">
+    <section className="rounded-3xl bg-white/90 p-5 shadow-soft ring-1 ring-ink-900/5 backdrop-blur-xl">
       <h2 className="mb-4 text-sm font-extrabold tracking-widest text-ink-400 uppercase">{title}</h2>
       {children}
     </section>

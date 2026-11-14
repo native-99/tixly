@@ -2,6 +2,7 @@ import { Pencil } from 'lucide-react'
 import { Link } from 'react-router'
 import { EventCover } from '@/components/events/EventCover'
 import { Badge } from '@/components/ui/Badge'
+import { buttonClasses } from '@/components/ui/buttonStyles'
 import { categoryLabel } from '@/config/categories'
 import { formatDateTime } from '@/lib/format'
 import { paths } from '@/routes/paths'
@@ -13,7 +14,7 @@ export function OrganizerEventCard({ event }: { event: EventSummary }) {
   const percent = event.capacity === 0 ? 0 : Math.round((taken / event.capacity) * 100)
 
   return (
-    <article className="flex h-full flex-col rounded-3xl border border-white/70 bg-white/90 p-4 shadow-soft backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lift">
+    <article className="flex h-full flex-col rounded-3xl bg-white/90 p-4 shadow-soft ring-1 ring-ink-900/5 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lift">
       <div className="flex gap-3.5">
         <EventCover event={event} className="size-20 shrink-0 rounded-2xl shadow-sm" />
         <div className="min-w-0 flex-1">
@@ -57,7 +58,7 @@ export function OrganizerEventCard({ event }: { event: EventSummary }) {
 
       <Link
         to={paths.editEvent(event.id)}
-        className="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-2xl border border-ink-200/80 bg-white/80 text-sm font-semibold text-ink-700 transition-all hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700"
+        className={`mt-5 ${buttonClasses('secondary')} w-full`}
       >
         <Pencil className="size-4" aria-hidden />
         Edit event

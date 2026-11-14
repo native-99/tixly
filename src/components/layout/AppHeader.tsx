@@ -11,7 +11,7 @@ export function AppHeader() {
   const items = navItemsFor(user?.role ?? null)
 
   return (
-    <header className="sticky top-0 z-20 border-b border-white/50 bg-white/70 pt-[env(safe-area-inset-top)] backdrop-blur-xl">
+    <header className="sticky top-0 z-30 border-b border-ink-900/5 bg-white/70 pt-[env(safe-area-inset-top)] backdrop-blur-2xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 md:h-18 md:px-6">
         <Logo />
 
@@ -26,8 +26,8 @@ export function AppHeader() {
                 cn(
                   'inline-flex min-h-10 items-center gap-1.5 rounded-xl px-3.5 text-sm font-semibold transition-all duration-200',
                   isActive
-                    ? 'bg-brand-50 text-brand-700 ring-1 ring-brand-500/15'
-                    : 'text-ink-500 hover:bg-ink-900/5 hover:text-ink-900',
+                    ? 'bg-brand-50 text-brand-700 ring-1 ring-brand-500/10'
+                    : 'text-ink-500 hover:bg-ink-900/4 hover:text-ink-900',
                 )
               }
             >
@@ -40,7 +40,7 @@ export function AppHeader() {
         {user ? (
           <Link
             to={paths.account}
-            className="flex items-center gap-2.5 rounded-2xl p-1 pr-2 transition-colors hover:bg-ink-900/5 md:hidden"
+            className="flex items-center gap-2.5 rounded-2xl p-1 pr-2 transition-colors hover:bg-ink-900/4 md:hidden"
             aria-label={`Account: ${user.fullName}`}
           >
             <span className="hidden text-right text-xs leading-tight min-[360px]:block">
@@ -54,7 +54,7 @@ export function AppHeader() {
         ) : (
           <Link
             to={paths.login}
-            className="rounded-xl bg-linear-to-br from-brand-500 to-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-glow transition-all hover:brightness-110 md:hidden"
+            className="rounded-xl bg-linear-to-br from-brand-500 to-brand-700 px-4 py-2 text-sm font-semibold text-white shadow-glow transition-all hover:-translate-y-px hover:brightness-105 md:hidden"
           >
             Log in
           </Link>

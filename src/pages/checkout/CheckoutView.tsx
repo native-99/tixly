@@ -127,7 +127,7 @@ export function CheckoutView({ order, event }: CheckoutViewProps) {
         </div>
       )}
 
-      <section className="overflow-hidden rounded-3xl border border-white/70 bg-white/90 shadow-soft backdrop-blur-sm">
+      <section className="overflow-hidden rounded-3xl bg-white/90 shadow-soft ring-1 ring-ink-900/5 backdrop-blur-xl">
         <div className="flex gap-4 p-5">
           <EventCover event={event} className="size-20 shrink-0 rounded-2xl shadow-sm" />
           <div className="min-w-0">
@@ -153,7 +153,7 @@ export function CheckoutView({ order, event }: CheckoutViewProps) {
         </ul>
         <div className="flex items-baseline justify-between border-t border-ink-100 bg-ink-50/70 px-5 py-4">
           <span className="font-bold text-ink-900">Total</span>
-          <span className="bg-linear-to-r from-brand-600 to-violet-600 bg-clip-text text-xl font-extrabold tracking-tight text-transparent tabular-nums">
+          <span className="text-xl font-extrabold tracking-[-0.02em] text-ink-900 tabular-nums">
             {formatRupiah(order.total)}
           </span>
         </div>
@@ -190,7 +190,7 @@ export function CheckoutView({ order, event }: CheckoutViewProps) {
         </StatusBox>
       ) : (
         <>
-          <section className="mt-5 flex items-center gap-3.5 rounded-3xl border border-white/70 bg-white/90 p-4 shadow-soft backdrop-blur-sm">
+          <section className="mt-5 flex items-center gap-3.5 rounded-3xl bg-white/90 p-4 shadow-soft ring-1 ring-ink-900/5 backdrop-blur-xl">
             <span className="grid size-11 place-items-center rounded-2xl bg-linear-to-br from-brand-100 to-brand-50 text-brand-600">
               <CreditCard className="size-5" aria-hidden />
             </span>
@@ -278,7 +278,7 @@ function StatusBox({ tone, title, text, children }: StatusBoxProps) {
       className={
         tone === 'success'
           ? 'mt-5 rounded-3xl border border-emerald-200/80 bg-emerald-50/80 p-6 text-center backdrop-blur-sm'
-          : 'mt-5 rounded-3xl border border-white/70 bg-white/90 p-6 text-center shadow-soft backdrop-blur-sm'
+          : 'mt-5 rounded-3xl bg-white/90 p-6 text-center shadow-soft ring-1 ring-ink-900/5 backdrop-blur-xl'
       }
     >
       {tone === 'success' && (

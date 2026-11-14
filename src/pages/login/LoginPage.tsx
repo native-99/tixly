@@ -51,7 +51,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <h1 className="text-2xl font-extrabold tracking-tight text-ink-900 md:text-3xl">Welcome back</h1>
+      <h1 className="text-3xl font-extrabold tracking-[-0.03em] text-ink-900">Welcome back</h1>
       <p className="mt-1.5 text-sm text-ink-500">Log in to buy and manage your tickets.</p>
 
       <form onSubmit={handleSubmit} className="mt-7 space-y-4" noValidate>

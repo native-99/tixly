@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { OfflineBanner } from '@/components/OfflineBanner'
 import { PageHeader } from '@/components/PageHeader'
 import { Badge } from '@/components/ui/Badge'
+import { buttonClasses } from '@/components/ui/buttonStyles'
 import { EmptyState, ErrorState, Skeleton } from '@/components/ui/States'
 import { formatDateTime } from '@/lib/format'
 import { queryKeys } from '@/lib/queryKeys'
@@ -46,7 +47,7 @@ export default function MyTicketsPage() {
 
   return (
     <>
-      <PageHeader title="My tickets" description="Your QR codes for entry." />
+      <PageHeader eyebrow="Entry pass" title="My tickets" description="Your QR codes for entry." />
 
       <OfflineBanner usingCache={usingCache} cachedHint="your QR codes still work" />
 
@@ -64,7 +65,7 @@ export default function MyTicketsPage() {
           action={
             <Link
               to={paths.events}
-              className="inline-flex min-h-11 items-center rounded-xl bg-brand-600 px-4 text-sm font-semibold text-white"
+              className={buttonClasses('primary')}
             >
               Browse events
             </Link>
